@@ -2,7 +2,7 @@
 
 namespace Round1.Models
 {
-	public class Hasta
+	public class Hasta 
 	{
 		public int Id { get; set; }
 		[Required]

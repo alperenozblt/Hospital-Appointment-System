@@ -1,7 +1,14 @@
+using Round1.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddControllers();
+//builder.Services.AddScoped<IApplicationDbContext, HastaneContext>();
+
+
 
 var app = builder.Build();
 

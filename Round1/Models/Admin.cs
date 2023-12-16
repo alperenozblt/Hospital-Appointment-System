@@ -2,7 +2,7 @@
 
 namespace Round1.Models
 {
-	public class Admin
+	public class Admin 
 	{
 		public int AdminId { get; set; }
 		[Required]

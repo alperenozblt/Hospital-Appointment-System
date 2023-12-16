@@ -1,0 +1,39 @@
+﻿
+@model Hasta 
+
+<div class="login-wrapper">
+    <h2>Hastane Randevu Sistemi</h2>
+    <div class="login-options">
+        <a href="HastaLogin">Hasta Girişi</a>
+    </div>
+
+
+    <form asp-action="HastaLogin" method="post">
+
+        <div class="login-form">
+         <h3>Hasta Girişi</h3>
+            <div class="form-group">
+                <label asp-for="Adı">Adı:</label>
+                <input asp-for="Adı" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Soyadi">Soyadı:</label>
+                <input asp-for="Soyadi" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="DogumYılı">Doğum Yılı:</label>
+                <input asp-for="DogumYılı" type="number" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TCKimlikNumarası">TCKN:</label>
+                <input asp-for="TCKimlikNumarası" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HastaPassword">Şifre:</label>
+                <input asp-for="HastaPassword" type="password" class="form-control" />
+            </div>
+            <button type="submit">Giriş Yap</button>
+        </div>
+    </form>
+</div>
