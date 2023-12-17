@@ -4,6 +4,7 @@ namespace Round1.Models
 {
 	public class Hasta 
 	{
+		[Key]
 		public int Id { get; set; }
 		[Required]
 		public string Adı { get; set; }
@@ -16,7 +17,7 @@ namespace Round1.Models
 		public string TelefonNumarası { get; set; }
 
 		[Required]
-		[RegularExpression("^([A-Z0-9_.-@#$%^&()<>/?])([a-z0-9_.-@#$%^&()<>/?])([0-9])*$")]
+		//[RegularExpression("^([A-Z0-9_.-@#$%^&()<>/?])([a-z0-9_.-@#$%^&()<>/?])([0-9])*$")]
 		public string HastaPassword { get; set; }
 		[Required]
 		public int DogumYılı { get; set; }

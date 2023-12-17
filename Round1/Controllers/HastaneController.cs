@@ -9,87 +9,82 @@ using Round1.Models;
 
 namespace Round1.Controllers
 {
-    public class RegisterController : Controller
+    public class HastaneController : Controller
     {
         private HastaneContext _context = new HastaneContext();
 
-        // GET: Register
+        // GET: Hastane
         public async Task<IActionResult> Index()
         {
-              return _context.Hastas != null ? 
-                          View(await _context.Hastas.ToListAsync()) :
-                          Problem("Entity set 'HastaneContext.Hastas'  is null.");
+              return _context.Hastanes != null ? 
+                          View(await _context.Hastanes.ToListAsync()) :
+                          Problem("Entity set 'HastaneContext.Hastanes'  is null.");
         }
 
-        // GET: Register/Details/5
+        // GET: Hastane/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Hastas == null)
+            if (id == null || _context.Hastanes == null)
             {
                 return NotFound();
             }
 
-            var hasta = await _context.Hastas
+            var hastane = await _context.Hastanes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hasta == null)
+            if (hastane == null)
             {
                 return NotFound();
             }
 
-            return View(hasta);
+            return View(hastane);
         }
 
-        // GET: Register/Create
+        // GET: Hastane/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Register/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public  IActionResult Create(Hasta hasta)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(hasta);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ViewBag.msj = "kayıt eklenemedi";
-                return View(hasta);
-
-            }
-        }
-
-        // GET: Register/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Hastas == null)
-            {
-                return NotFound();
-            }
-
-            var hasta = await _context.Hastas.FindAsync(id);
-            if (hasta == null)
-            {
-                return NotFound();
-            }
-            return View(hasta);
-        }
-
-        // POST: Register/Edit/5
+        // POST: Hastane/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Adı,Soyadi,TCKimlikNumarası,TelefonNumarası,HastaPassword,DogumYılı")] Hasta hasta)
+        public async Task<IActionResult> Create([Bind("Id,Adı,Adresi,TelefonNumarası")] Hastane hastane)
         {
-            if (id != hasta.Id)
+            if (ModelState.IsValid)
+            {
+                _context.Add(hastane);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(hastane);
+        }
+
+        // GET: Hastane/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Hastanes == null)
+            {
+                return NotFound();
+            }
+
+            var hastane = await _context.Hastanes.FindAsync(id);
+            if (hastane == null)
+            {
+                return NotFound();
+            }
+            return View(hastane);
+        }
+
+        // POST: Hastane/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Adı,Adresi,TelefonNumarası")] Hastane hastane)
+        {
+            if (id != hastane.Id)
             {
                 return NotFound();
             }
@@ -98,12 +93,12 @@ namespace Round1.Controllers
             {
                 try
                 {
-                    _context.Update(hasta);
+                    _context.Update(hastane);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HastaExists(hasta.Id))
+                    if (!HastaneExists(hastane.Id))
                     {
                         return NotFound();
                     }
@@ -114,49 +109,49 @@ namespace Round1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(hasta);
+            return View(hastane);
         }
 
-        // GET: Register/Delete/5
+        // GET: Hastane/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Hastas == null)
+            if (id == null || _context.Hastanes == null)
             {
                 return NotFound();
             }
 
-            var hasta = await _context.Hastas
+            var hastane = await _context.Hastanes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hasta == null)
+            if (hastane == null)
             {
                 return NotFound();
             }
 
-            return View(hasta);
+            return View(hastane);
         }
 
-        // POST: Register/Delete/5
+        // POST: Hastane/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Hastas == null)
+            if (_context.Hastanes == null)
             {
-                return Problem("Entity set 'HastaneContext.Hastas'  is null.");
+                return Problem("Entity set 'HastaneContext.Hastanes'  is null.");
             }
-            var hasta = await _context.Hastas.FindAsync(id);
-            if (hasta != null)
+            var hastane = await _context.Hastanes.FindAsync(id);
+            if (hastane != null)
             {
-                _context.Hastas.Remove(hasta);
+                _context.Hastanes.Remove(hastane);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HastaExists(int id)
+        private bool HastaneExists(int id)
         {
-          return (_context.Hastas?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Hastanes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
