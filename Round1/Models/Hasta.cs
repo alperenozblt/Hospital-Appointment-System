@@ -22,7 +22,7 @@ namespace Round1.Models
 		[Required]
 		public int DogumYılı { get; set; }
 
-		public ICollection<Randevu> Randevu { get; set; }
+		public ICollection<Randevu>? Randevu { get; set; }
 
 	}
 }

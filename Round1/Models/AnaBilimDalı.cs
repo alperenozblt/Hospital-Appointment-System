@@ -11,6 +11,6 @@ namespace Round1.Models
 		public string Adi { get; set; }
 		[ForeignKey("HastaneId")]
 		public int HastaneId { get; set; }
-		public ICollection<Poliklinik> Poliklinik { get; set; }
+		public ICollection<Poliklinik>? Poliklinik { get; set; }
 	}
 }

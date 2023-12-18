@@ -10,7 +10,7 @@ namespace Round1.Models
 		public string Adi { get; set; }
 		[ForeignKey("AnaBilimDaliId")]
 		public int AnaBilimDaliId { get; set; }
-		ICollection<Doktor> Doktor { get; set;}
+		ICollection<Doktor>? Doktor { get; set;}
 	}
 
 }

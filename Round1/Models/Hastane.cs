@@ -11,7 +11,7 @@ namespace Round1.Models
 		[Phone(ErrorMessage ="Geçerli bir numara giriniz. ")]
 		public string TelefonNumarası { get; set; }
 
-		ICollection<AnaBilimDali> AnaBilimDali { get;set; }
+		ICollection<AnaBilimDali>? AnaBilimDali { get;set; }
 	}
 
 
