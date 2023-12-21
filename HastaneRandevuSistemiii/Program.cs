@@ -6,18 +6,20 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<HastaneRandevuuContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<Kullanici>(options => options.SignIn.RequireConfirmedAccount = true)
-//  .AddRoles<IdentityRole>()
+//  builder.Services.AddDefaultIdentity<Kullanici>(options => options.SignIn.RequireConfirmedAccount = true)
+//     .AddEntityFrameworkStores<HastaneRandevuuContext>();
 builder.Services.AddIdentity<Kullanici, IdentityRole>()
-              .AddDefaultTokenProviders()
-              .AddDefaultUI()
-  .AddEntityFrameworkStores<HastaneRandevuuContext>();
-    
+     .AddDefaultTokenProviders()
+     .AddDefaultUI()
+     .AddEntityFrameworkStores<HastaneRandevuuContext>();
+
+//  builder.Services.ConfigureApplicationCookie(options=>
+//  options.AccessDeniedPath=)
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

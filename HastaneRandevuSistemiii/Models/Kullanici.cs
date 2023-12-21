@@ -5,6 +5,15 @@ namespace HastaneRandevuSistemiii.Models
 {
     public class Kullanici:IdentityUser
     {
-    ICollection<Randevu>? Randevular { get; set; }
+       
+        public string KullaniciAd { get; set; }
+      
+        public string KullaniciSoyad { get; set; }
+
+       
+        [RegularExpression("^[1-9]{1}[0-9]{9}[02468]{1}$")]
+        public string TcNo { get; set; }
+
+
     }
 }
