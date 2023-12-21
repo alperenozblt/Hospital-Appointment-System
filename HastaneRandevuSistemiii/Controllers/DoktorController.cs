@@ -47,7 +47,7 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Doktor/Create
-        [Authorize("Admin")]
+        
         public IActionResult Create()
         {
             return View();

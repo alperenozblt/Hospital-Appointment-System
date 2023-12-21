@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HastaneRandevuSistemiii.Data
 {
-    public class HastaneRandevuuContext : IdentityDbContext
+    public class HastaneRandevuuContext : IdentityDbContext<Kullanici>
     {
 
         public HastaneRandevuuContext(DbContextOptions<HastaneRandevuuContext> option) : base(option)

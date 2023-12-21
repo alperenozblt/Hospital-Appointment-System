@@ -1,4 +1,5 @@
 using HastaneRandevuSistemiii.Data;
+using HastaneRandevuSistemiii.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,8 +11,13 @@ builder.Services.AddDbContext<HastaneRandevuuContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<HastaneRandevuuContext>();
+//builder.Services.AddDefaultIdentity<Kullanici>(options => options.SignIn.RequireConfirmedAccount = true)
+//  .AddRoles<IdentityRole>()
+builder.Services.AddIdentity<Kullanici, IdentityRole>()
+              .AddDefaultTokenProviders()
+              .AddDefaultUI()
+  .AddEntityFrameworkStores<HastaneRandevuuContext>();
+    
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
