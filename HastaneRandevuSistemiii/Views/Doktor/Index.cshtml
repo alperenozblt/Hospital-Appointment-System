@@ -6,9 +6,7 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -43,9 +41,13 @@
                 @Html.DisplayFor(modelItem => item.IsActive)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DoktorId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DoktorId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DoktorId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.DoktorId">Details</a>
+                @if (User.IsInRole("Admin"))
+                    {
+                <a asp-action="Edit" asp-route-id="@item.DoktorId">| Edit</a>
+
+                <a asp-action="Delete" asp-route-id="@item.DoktorId">| Delete</a>
+                    }
             </td>
         </tr>
 }
