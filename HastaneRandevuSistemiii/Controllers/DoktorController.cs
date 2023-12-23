@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -23,20 +22,20 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Doktor
         public async Task<IActionResult> Index()
         {
-              return _context.Doktorlar != null ? 
-                          View(await _context.Doktorlar.ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Doktorlar'  is null.");
+              return _context.Doktors != null ? 
+                          View(await _context.Doktors.ToListAsync()) :
+                          Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
         }
 
         // GET: Doktor/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Doktorlar == null)
+            if (id == null || _context.Doktors == null)
             {
                 return NotFound();
             }
 
-            var doktor = await _context.Doktorlar
+            var doktor = await _context.Doktors
                 .FirstOrDefaultAsync(m => m.DoktorId == id);
             if (doktor == null)
             {
@@ -47,7 +46,6 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Doktor/Create
-        
         public IActionResult Create()
         {
             return View();
@@ -72,12 +70,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Doktor/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Doktorlar == null)
+            if (id == null || _context.Doktors == null)
             {
                 return NotFound();
             }
 
-            var doktor = await _context.Doktorlar.FindAsync(id);
+            var doktor = await _context.Doktors.FindAsync(id);
             if (doktor == null)
             {
                 return NotFound();
@@ -123,12 +121,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Doktor/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Doktorlar == null)
+            if (id == null || _context.Doktors == null)
             {
                 return NotFound();
             }
 
-            var doktor = await _context.Doktorlar
+            var doktor = await _context.Doktors
                 .FirstOrDefaultAsync(m => m.DoktorId == id);
             if (doktor == null)
             {
@@ -143,14 +141,14 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Doktorlar == null)
+            if (_context.Doktors == null)
             {
-                return Problem("Entity set 'HastaneRandevuuContext.Doktorlar'  is null.");
+                return Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
             }
-            var doktor = await _context.Doktorlar.FindAsync(id);
+            var doktor = await _context.Doktors.FindAsync(id);
             if (doktor != null)
             {
-                _context.Doktorlar.Remove(doktor);
+                _context.Doktors.Remove(doktor);
             }
             
             await _context.SaveChangesAsync();
@@ -159,7 +157,7 @@ namespace HastaneRandevuSistemiii.Controllers
 
         private bool DoktorExists(int id)
         {
-          return (_context.Doktorlar?.Any(e => e.DoktorId == id)).GetValueOrDefault();
+          return (_context.Doktors?.Any(e => e.DoktorId == id)).GetValueOrDefault();
         }
     }
 }

@@ -22,20 +22,20 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Poliklinik
         public async Task<IActionResult> Index()
         {
-              return _context.Poliklinik != null ? 
-                          View(await _context.Poliklinik.ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Poliklinik'  is null.");
+              return _context.Polikliniks != null ? 
+                          View(await _context.Polikliniks.ToListAsync()) :
+                          Problem("Entity set 'HastaneRandevuuContext.Polikliniks'  is null.");
         }
 
         // GET: Poliklinik/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Poliklinik == null)
+            if (id == null || _context.Polikliniks == null)
             {
                 return NotFound();
             }
 
-            var poliklinik = await _context.Poliklinik
+            var poliklinik = await _context.Polikliniks
                 .FirstOrDefaultAsync(m => m.PoliklinikId == id);
             if (poliklinik == null)
             {
@@ -70,12 +70,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Poliklinik/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Poliklinik == null)
+            if (id == null || _context.Polikliniks == null)
             {
                 return NotFound();
             }
 
-            var poliklinik = await _context.Poliklinik.FindAsync(id);
+            var poliklinik = await _context.Polikliniks.FindAsync(id);
             if (poliklinik == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Poliklinik/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Poliklinik == null)
+            if (id == null || _context.Polikliniks == null)
             {
                 return NotFound();
             }
 
-            var poliklinik = await _context.Poliklinik
+            var poliklinik = await _context.Polikliniks
                 .FirstOrDefaultAsync(m => m.PoliklinikId == id);
             if (poliklinik == null)
             {
@@ -141,14 +141,14 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Poliklinik == null)
+            if (_context.Polikliniks == null)
             {
-                return Problem("Entity set 'HastaneRandevuuContext.Poliklinik'  is null.");
+                return Problem("Entity set 'HastaneRandevuuContext.Polikliniks'  is null.");
             }
-            var poliklinik = await _context.Poliklinik.FindAsync(id);
+            var poliklinik = await _context.Polikliniks.FindAsync(id);
             if (poliklinik != null)
             {
-                _context.Poliklinik.Remove(poliklinik);
+                _context.Polikliniks.Remove(poliklinik);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace HastaneRandevuSistemiii.Controllers
 
         private bool PoliklinikExists(int id)
         {
-          return (_context.Poliklinik?.Any(e => e.PoliklinikId == id)).GetValueOrDefault();
+          return (_context.Polikliniks?.Any(e => e.PoliklinikId == id)).GetValueOrDefault();
         }
     }
 }

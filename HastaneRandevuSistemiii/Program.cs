@@ -13,7 +13,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //  builder.Services.AddDefaultIdentity<Kullanici>(options => options.SignIn.RequireConfirmedAccount = true)
 //     .AddEntityFrameworkStores<HastaneRandevuuContext>();
-builder.Services.AddIdentity<Kullanici, IdentityRole>()
+builder.Services.AddIdentity<Kullanici,IdentityRole>()
      .AddDefaultTokenProviders()
      .AddDefaultUI()
      .AddEntityFrameworkStores<HastaneRandevuuContext>();

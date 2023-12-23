@@ -4,6 +4,7 @@ using HastaneRandevuSistemiii.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    partial class HastaneRandevuuContextModelSnapshot : ModelSnapshot
+    [Migration("20231223172541_poli")]
+    partial class poli
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

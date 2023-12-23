@@ -20,24 +20,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PoliklinikAdi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HastaneId)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.PoliklinikId">Details |</a>
-                @if (User.IsInRole("Admin"))
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PoliklinikAdi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HastaneId)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.PoliklinikId">Details |</a>
+                    @if (User.IsInRole("Admin"))
                     {
-                <a asp-action="Edit" asp-route-id="@item.PoliklinikId">Edit |</a>
+                        <a asp-action="Edit" asp-route-id="@item.PoliklinikId">Edit |</a>
 
-                <a asp-action="Delete" asp-route-id="@item.PoliklinikId">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@item.PoliklinikId">Delete</a>
                     }
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

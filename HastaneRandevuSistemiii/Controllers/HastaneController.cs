@@ -22,20 +22,20 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Hastane
         public async Task<IActionResult> Index()
         {
-              return _context.Hastaneler != null ? 
-                          View(await _context.Hastaneler.ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Hastaneler'  is null.");
+              return _context.Hastanes != null ? 
+                          View(await _context.Hastanes.ToListAsync()) :
+                          Problem("Entity set 'HastaneRandevuuContext.Hastanes'  is null.");
         }
 
         // GET: Hastane/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Hastaneler == null)
+            if (id == null || _context.Hastanes == null)
             {
                 return NotFound();
             }
 
-            var hastane = await _context.Hastaneler
+            var hastane = await _context.Hastanes
                 .FirstOrDefaultAsync(m => m.HastaneId == id);
             if (hastane == null)
             {
@@ -70,12 +70,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Hastane/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Hastaneler == null)
+            if (id == null || _context.Hastanes == null)
             {
                 return NotFound();
             }
 
-            var hastane = await _context.Hastaneler.FindAsync(id);
+            var hastane = await _context.Hastanes.FindAsync(id);
             if (hastane == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Hastane/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Hastaneler == null)
+            if (id == null || _context.Hastanes == null)
             {
                 return NotFound();
             }
 
-            var hastane = await _context.Hastaneler
+            var hastane = await _context.Hastanes
                 .FirstOrDefaultAsync(m => m.HastaneId == id);
             if (hastane == null)
             {
@@ -141,14 +141,14 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Hastaneler == null)
+            if (_context.Hastanes == null)
             {
-                return Problem("Entity set 'HastaneRandevuuContext.Hastaneler'  is null.");
+                return Problem("Entity set 'HastaneRandevuuContext.Hastanes'  is null.");
             }
-            var hastane = await _context.Hastaneler.FindAsync(id);
+            var hastane = await _context.Hastanes.FindAsync(id);
             if (hastane != null)
             {
-                _context.Hastaneler.Remove(hastane);
+                _context.Hastanes.Remove(hastane);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace HastaneRandevuSistemiii.Controllers
 
         private bool HastaneExists(int id)
         {
-          return (_context.Hastaneler?.Any(e => e.HastaneId == id)).GetValueOrDefault();
+          return (_context.Hastanes?.Any(e => e.HastaneId == id)).GetValueOrDefault();
         }
     }
 }

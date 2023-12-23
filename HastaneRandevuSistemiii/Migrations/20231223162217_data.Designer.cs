@@ -4,6 +4,7 @@ using HastaneRandevuSistemiii.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    partial class HastaneRandevuuContextModelSnapshot : ModelSnapshot
+    [Migration("20231223162217_data")]
+    partial class data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace HastaneRandevuSistemiii.Migrations
 
                     b.HasKey("CalismaGünüId");
 
-                    b.ToTable("CalismaGunlerii");
+                    b.ToTable("CalismaGunleris");
                 });
 
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
@@ -73,7 +75,7 @@ namespace HastaneRandevuSistemiii.Migrations
 
                     b.HasKey("DoktorId");
 
-                    b.ToTable("Doktors");
+                    b.ToTable("Doktorlar");
                 });
 
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Hastane", b =>
@@ -91,7 +93,7 @@ namespace HastaneRandevuSistemiii.Migrations
 
                     b.HasKey("HastaneId");
 
-                    b.ToTable("Hastanes");
+                    b.ToTable("Hastaneler");
                 });
 
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Kullanici", b =>
@@ -189,7 +191,7 @@ namespace HastaneRandevuSistemiii.Migrations
 
                     b.HasKey("PoliklinikId");
 
-                    b.ToTable("Polikliniks");
+                    b.ToTable("Poliklinik");
                 });
 
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Randevu", b =>
@@ -209,15 +211,12 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.Property<int>("KullaniciId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PoliklinikId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RandevuTarih")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RandevuID");
 
-                    b.ToTable("Randevus");
+                    b.ToTable("Randevular");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

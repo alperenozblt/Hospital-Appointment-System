@@ -22,20 +22,20 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Randevu
         public async Task<IActionResult> Index()
         {
-              return _context.Randevular != null ? 
-                          View(await _context.Randevular.ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Randevular'  is null.");
+              return _context.Randevus != null ? 
+                          View(await _context.Randevus.ToListAsync()) :
+                          Problem("Entity set 'HastaneRandevuuContext.Randevus'  is null.");
         }
 
         // GET: Randevu/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Randevular == null)
+            if (id == null || _context.Randevus == null)
             {
                 return NotFound();
             }
 
-            var randevu = await _context.Randevular
+            var randevu = await _context.Randevus
                 .FirstOrDefaultAsync(m => m.RandevuID == id);
             if (randevu == null)
             {
@@ -56,7 +56,7 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RandevuID,DoktorId,KullaniciId,RandevuTarih")] Randevu randevu)
+        public async Task<IActionResult> Create([Bind("RandevuID,DoktorId,KullaniciId,HastaneId,RandevuTarih")] Randevu randevu)
         {
             if (ModelState.IsValid)
             {
@@ -70,12 +70,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Randevu/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Randevular == null)
+            if (id == null || _context.Randevus == null)
             {
                 return NotFound();
             }
 
-            var randevu = await _context.Randevular.FindAsync(id);
+            var randevu = await _context.Randevus.FindAsync(id);
             if (randevu == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RandevuID,DoktorId,KullaniciId,RandevuTarih")] Randevu randevu)
+        public async Task<IActionResult> Edit(int id, [Bind("RandevuID,DoktorId,KullaniciId,HastaneId,RandevuTarih")] Randevu randevu)
         {
             if (id != randevu.RandevuID)
             {
@@ -121,12 +121,12 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Randevu/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Randevular == null)
+            if (id == null || _context.Randevus == null)
             {
                 return NotFound();
             }
 
-            var randevu = await _context.Randevular
+            var randevu = await _context.Randevus
                 .FirstOrDefaultAsync(m => m.RandevuID == id);
             if (randevu == null)
             {
@@ -141,14 +141,14 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Randevular == null)
+            if (_context.Randevus == null)
             {
-                return Problem("Entity set 'HastaneRandevuuContext.Randevular'  is null.");
+                return Problem("Entity set 'HastaneRandevuuContext.Randevus'  is null.");
             }
-            var randevu = await _context.Randevular.FindAsync(id);
+            var randevu = await _context.Randevus.FindAsync(id);
             if (randevu != null)
             {
-                _context.Randevular.Remove(randevu);
+                _context.Randevus.Remove(randevu);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,10 @@ namespace HastaneRandevuSistemiii.Controllers
 
         private bool RandevuExists(int id)
         {
-          return (_context.Randevular?.Any(e => e.RandevuID == id)).GetValueOrDefault();
+          return (_context.Randevus?.Any(e => e.RandevuID == id)).GetValueOrDefault();
         }
+
+      
+       
     }
 }

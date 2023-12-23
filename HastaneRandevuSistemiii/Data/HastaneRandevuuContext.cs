@@ -19,13 +19,12 @@ namespace HastaneRandevuSistemiii.Data
 Database=HastaneRandevuu;Trusted_Connection=True;");
         }
 
-        public DbSet<Hastane> Hastaneler { get; set; }
-        public DbSet<Doktor> Doktorlar { get; set; }
-        public DbSet<Randevu> Randevular { get; set; }
-        public DbSet<CalismaGunleri> CalismaGunleris { get; set; }
-
-        public DbSet<Kullanici> Kullanicilar { get; set; }
-        public DbSet<Poliklinik> Poliklinik { get; set; }
+        public DbSet<Hastane> Hastanes { get; set; }
+        public DbSet<Doktor> Doktors { get; set; }
+        public DbSet<Randevu> Randevus { get; set; }
+        public DbSet<CalismaGunleri> CalismaGunlerii { get; set; }
+      
+        public DbSet<Poliklinik> Polikliniks { get; set; }
 
 
 
