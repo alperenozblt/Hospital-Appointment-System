@@ -16,7 +16,7 @@ namespace HastaneRandevuSistemiii.Models
      
         public int PoliklinikId { get; set; }
         
-        public Poliklinik? poliklinik { get; set; }
+        public Poliklinik? Poliklinik { get; set; }
         public bool? IsActive { get; set; }
         
     }

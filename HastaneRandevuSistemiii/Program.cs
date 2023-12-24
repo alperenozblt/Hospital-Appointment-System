@@ -18,6 +18,14 @@ builder.Services.AddIdentity<Kullanici,IdentityRole>()
      .AddDefaultUI()
      .AddEntityFrameworkStores<HastaneRandevuuContext>();
 
+///////Password
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Lockout settings.
+    options.Password.RequiredLength = 3;
+});
+
+
 //  builder.Services.ConfigureApplicationCookie(options=>
 //  options.AccessDeniedPath=)
 builder.Services.AddControllersWithViews();

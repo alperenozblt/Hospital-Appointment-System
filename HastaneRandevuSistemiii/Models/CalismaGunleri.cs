@@ -8,7 +8,6 @@ namespace HastaneRandevuSistemiii.Models
         [Key]
         public int CalismaGünüId { get; set; }
         [Required]
-        [MaxLength(7)]
         public string Günler { get; set; } //enum kullan
         [Required]
         public string Saatler { get; set; }
@@ -16,5 +15,6 @@ namespace HastaneRandevuSistemiii.Models
         [ForeignKey("DoktorId")]
         [Required]
         public int DoktorId { get; set; }
+        public Doktor Doktor { get; set;}
     }
 }

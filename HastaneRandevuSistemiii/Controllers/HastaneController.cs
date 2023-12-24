@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -46,6 +48,8 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Hastane/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             return View();
@@ -56,6 +60,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create([Bind("HastaneId,HastaneAdi")] Hastane hastane)
         {
             if (ModelState.IsValid)
@@ -68,6 +74,8 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Hastane/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Hastanes == null)
@@ -88,6 +96,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("HastaneId,HastaneAdi")] Hastane hastane)
         {
             if (id != hastane.HastaneId)
@@ -119,6 +129,8 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Hastane/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Hastanes == null)
@@ -139,6 +151,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // POST: Hastane/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Hastanes == null)

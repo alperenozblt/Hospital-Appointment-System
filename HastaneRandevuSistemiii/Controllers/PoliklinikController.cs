@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -46,6 +48,8 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Poliklinik/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             var hastaneler = _context.Hastanes.ToList();
@@ -58,6 +62,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create([Bind("PoliklinikId,PoliklinikAdi,HastaneId")] Poliklinik poliklinik)
         {
             if (ModelState.IsValid)
@@ -78,6 +84,8 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Poliklinik/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id)
         {
             var poliklinik = await _context.Polikliniks.FindAsync(id);
@@ -96,6 +104,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("PoliklinikId,PoliklinikAdi,HastaneId")] Poliklinik poliklinik)
         {
             if (id != poliklinik.PoliklinikId)
@@ -121,7 +131,10 @@ namespace HastaneRandevuSistemiii.Controllers
             return View(poliklinik);
         }
 
+
         // GET: Poliklinik/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Polikliniks == null)
@@ -142,6 +155,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // POST: Poliklinik/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Polikliniks == null)

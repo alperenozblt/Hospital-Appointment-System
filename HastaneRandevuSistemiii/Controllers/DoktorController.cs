@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -22,9 +23,9 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Doktor
         public async Task<IActionResult> Index()
         {
-              return _context.Doktors != null ? 
-                          View(await _context.Doktors.ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
+            return _context.Doktors != null ?
+                        View(await _context.Doktors.ToListAsync()) :
+                        Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
         }
 
         // GET: Doktor/Details/5
@@ -46,7 +47,7 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Doktor/Create
-        // GET: Doktor/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var hastaneler = _context.Hastanes.ToList();
@@ -64,30 +65,38 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DoktorId,DoktorAdi,DoktorSoyadi,HastaneId,PoliklinikId,IsActive")] Doktor doktor)
+        [Authorize(Roles = "Admin")]
+
+        public async Task<IActionResult> Create(Doktor doktor)
         {
-            if (ModelState.IsValid)
+
+
+            var hastane = await _context.Hastanes.FindAsync(doktor.Poliklinik.HastaneId);
+            if (hastane == null)
             {
-
-                var hastane = await _context.Hastanes.FindAsync(doktor.poliklinik.HastaneId);
-                if (hastane == null)
-                {
-                    ModelState.AddModelError("HastaneId", "Geçersiz HastaneId");
-                    return View(doktor);
-                }
-
-                var poliklinik = await _context.Polikliniks.FindAsync(doktor.PoliklinikId);
-                if (poliklinik == null || poliklinik.HastaneId != doktor.poliklinik.HastaneId)
-                {
-                    ModelState.AddModelError("PoliklinikId", "Geçersiz PoliklinikId");
-                    return View(doktor);
-                }
-
-                doktor.poliklinik.HastaneId = hastane.HastaneId;
-                _context.Add(doktor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("HastaneId", "Geçersiz HastaneId");
+                return View(doktor);
             }
+
+            var poliklinik = await _context.Polikliniks.FindAsync(doktor.PoliklinikId);
+            if (poliklinik == null || poliklinik.HastaneId != doktor.Poliklinik.HastaneId)
+            {
+                ModelState.AddModelError("PoliklinikId", "Geçersiz PoliklinikId");
+                return View(doktor);
+            }
+
+            doktor.Poliklinik.HastaneId = hastane.HastaneId;
+            var dokt = new Doktor()
+            {
+                DoktorAdi = doktor.DoktorAdi,
+                DoktorSoyadi = doktor.DoktorSoyadi,
+                PoliklinikId = poliklinik.PoliklinikId,
+
+            };
+                _context.Add(dokt);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
             return View(doktor);
         }
 
@@ -100,6 +109,8 @@ namespace HastaneRandevuSistemiii.Controllers
 
 
         // GET: Doktor/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Doktors == null)
@@ -120,6 +131,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("DoktorId,DoktorAdi,DoktorSoyadi,PoliklinikId,IsActive")] Doktor doktor)
         {
             if (id != doktor.DoktorId)
@@ -151,6 +164,8 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Doktor/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Doktors == null)
@@ -171,6 +186,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // POST: Doktor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Doktors == null)
@@ -182,14 +199,14 @@ namespace HastaneRandevuSistemiii.Controllers
             {
                 _context.Doktors.Remove(doktor);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DoktorExists(int id)
         {
-          return (_context.Doktors?.Any(e => e.DoktorId == id)).GetValueOrDefault();
+            return (_context.Doktors?.Any(e => e.DoktorId == id)).GetValueOrDefault();
         }
     }
 }
