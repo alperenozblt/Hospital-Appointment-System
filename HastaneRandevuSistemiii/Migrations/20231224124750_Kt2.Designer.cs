@@ -4,6 +4,7 @@ using HastaneRandevuSistemiii.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    partial class HastaneRandevuuContextModelSnapshot : ModelSnapshot
+    [Migration("20231224124750_Kt2")]
+    partial class Kt2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,14 +68,13 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<bool?>("IsActive")
+                        .IsRequired()
                         .HasColumnType("bit");
 
                     b.Property<int>("PoliklinikId")
                         .HasColumnType("int");
 
                     b.HasKey("DoktorId");
-
-                    b.HasIndex("PoliklinikId");
 
                     b.ToTable("Doktors");
                 });
@@ -190,8 +191,6 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("PoliklinikId");
-
-                    b.HasIndex("HastaneId");
 
                     b.ToTable("Polikliniks");
                 });
@@ -360,28 +359,6 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
-                {
-                    b.HasOne("HastaneRandevuSistemiii.Models.Poliklinik", "poliklinik")
-                        .WithMany()
-                        .HasForeignKey("PoliklinikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("poliklinik");
-                });
-
-            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Poliklinik", b =>
-                {
-                    b.HasOne("HastaneRandevuSistemiii.Models.Hastane", "hastane")
-                        .WithMany()
-                        .HasForeignKey("HastaneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("hastane");
                 });
 
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Randevu", b =>

@@ -13,13 +13,11 @@ namespace HastaneRandevuSistemiii.Models
         [MaxLength(100)]
         public string DoktorSoyadi { get; set; }
 
-        [Required]
-        [ForeignKey("PoliklinikId")]
+     
         public int PoliklinikId { get; set; }
-        [Required]
-        [ForeignKey("HastaneId")]
+        
+        public Poliklinik? poliklinik { get; set; }
         public bool? IsActive { get; set; }
-        ICollection<CalismaGunleri>? CalismaGunu { get; set; }
-        ICollection<Randevu>? Randevular { get; set; }
+        
     }
 }

@@ -18,11 +18,11 @@
                 <input asp-for="PoliklinikAdi" class="form-control" />
                 <span asp-validation-for="PoliklinikAdi" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="HastaneId" class="control-label"></label>
-                <input asp-for="HastaneId" class="form-control" />
-                <span asp-validation-for="HastaneId" class="text-danger"></span>
-            </div>
+                          <div class="form-group">
+                    <label asp-for="HastaneId" class="form-label">Hastane</label>
+                @Html.DropDownList("HastaneId", ViewBag.Hastanes as SelectList, new { @class = "form-control" })
+                    <span asp-validation-for="HastaneId" class="text-danger"></span>
+                </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

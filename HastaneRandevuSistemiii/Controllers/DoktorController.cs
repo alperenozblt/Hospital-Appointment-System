@@ -46,26 +46,58 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Doktor/Create
+        // GET: Doktor/Create
         public IActionResult Create()
         {
+            var hastaneler = _context.Hastanes.ToList();
+            ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi");
+
+            var poliklinikler = new List<Poliklinik>();
+            ViewBag.Poliklinikler = new SelectList(poliklinikler, "PoliklinikId", "PoliklinikAdi");
+
             return View();
         }
+
 
         // POST: Doktor/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DoktorId,DoktorAdi,DoktorSoyadi,PoliklinikId,IsActive")] Doktor doktor)
+        public async Task<IActionResult> Create([Bind("DoktorId,DoktorAdi,DoktorSoyadi,HastaneId,PoliklinikId,IsActive")] Doktor doktor)
         {
             if (ModelState.IsValid)
             {
+
+                var hastane = await _context.Hastanes.FindAsync(doktor.poliklinik.HastaneId);
+                if (hastane == null)
+                {
+                    ModelState.AddModelError("HastaneId", "Geçersiz HastaneId");
+                    return View(doktor);
+                }
+
+                var poliklinik = await _context.Polikliniks.FindAsync(doktor.PoliklinikId);
+                if (poliklinik == null || poliklinik.HastaneId != doktor.poliklinik.HastaneId)
+                {
+                    ModelState.AddModelError("PoliklinikId", "Geçersiz PoliklinikId");
+                    return View(doktor);
+                }
+
+                doktor.poliklinik.HastaneId = hastane.HastaneId;
                 _context.Add(doktor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(doktor);
         }
+
+        // GET: Doktor/GetPoliklinikler
+        public async Task<IActionResult> GetPoliklinikler(int hastaneId)
+        {
+            var poliklinikler = await _context.Polikliniks.Where(p => p.HastaneId == hastaneId).ToListAsync();
+            return Json(poliklinikler);
+        }
+
 
         // GET: Doktor/Edit/5
         public async Task<IActionResult> Edit(int? id)

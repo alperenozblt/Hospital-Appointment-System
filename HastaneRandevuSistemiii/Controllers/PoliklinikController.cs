@@ -48,6 +48,8 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Poliklinik/Create
         public IActionResult Create()
         {
+            var hastaneler = _context.Hastanes.ToList();
+            ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi");
             return View();
         }
 
@@ -60,6 +62,14 @@ namespace HastaneRandevuSistemiii.Controllers
         {
             if (ModelState.IsValid)
             {
+                var hastane = await _context.Hastanes.FindAsync(poliklinik.HastaneId);
+                if (hastane == null)
+                {
+                    ModelState.AddModelError("HastaneId", "Geçersiz HastaneId");
+                    return View(poliklinik);
+                }
+                poliklinik.HastaneId = hastane.HastaneId;
+
                 _context.Add(poliklinik);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -68,18 +78,16 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Poliklinik/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Polikliniks == null)
-            {
-                return NotFound();
-            }
-
             var poliklinik = await _context.Polikliniks.FindAsync(id);
             if (poliklinik == null)
             {
                 return NotFound();
             }
+
+            var hastaneler = _context.Hastanes.ToList();
+            ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi", poliklinik.HastaneId);
             return View(poliklinik);
         }
 
@@ -97,22 +105,17 @@ namespace HastaneRandevuSistemiii.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var hastane = await _context.Hastanes.FindAsync(poliklinik.HastaneId);
+                if (hastane == null)
                 {
-                    _context.Update(poliklinik);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("HastaneId", "Geçersiz HastaneId");
+                    return View(poliklinik);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PoliklinikExists(poliklinik.PoliklinikId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                poliklinik.HastaneId = hastane.HastaneId;
+
+                _context.Update(poliklinik);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(poliklinik);

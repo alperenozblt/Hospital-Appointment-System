@@ -16,7 +16,7 @@ namespace HastaneRandevuSistemiii.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb; 
-Database=HastaneRandevuu;Trusted_Connection=True;");
+Database=HaastaneRandevu;Trusted_Connection=True;");
         }
 
         public DbSet<Hastane> Hastanes { get; set; }

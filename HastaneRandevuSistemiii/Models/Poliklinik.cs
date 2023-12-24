@@ -9,10 +9,11 @@ namespace HastaneRandevuSistemiii.Models
         [Required]
         [MaxLength(100)]
         public string? PoliklinikAdi { get; set; }
-        [ForeignKey("HastaneId")]
-        [Required]
+        
         public int HastaneId { get; set; }
 
-        ICollection<Doktor>? Doktorlar { get; set; }
+        public Hastane? hastane { get; set; }
+
+       
     }
 }

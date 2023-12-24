@@ -9,6 +9,6 @@ namespace HastaneRandevuSistemiii.Models
         [MaxLength(100)]
         [Display(Name = "Hastane Adı")]
         public string HastaneAdi { get; set; }
-        ICollection<Poliklinik>? Poliklinikler { get; set; }
+        
     }
 }
