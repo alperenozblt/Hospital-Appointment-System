@@ -1,38 +1,74 @@
 ﻿@model IEnumerable<HastaneRandevuSistemiii.Models.Hastane>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Hastaneler";  // Daha anlamlı bir başlık
 }
 
-<h1>Index</h1>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
 
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        border-radius: 5px;
+        background-color: #428bca;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #337ab7;
+        }
+</style>
+
+<h1>Hastaneler</h1>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HastaneAdi)
-            </th>
+            <th>Hastane Adı</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var hastane in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => hastane.HastaneAdi)</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.HastaneAdi)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.HastaneId">Details</a>
+                    <a asp-action="Details" asp-route-id="@hastane.HastaneId" class="btn-primary">Detaylar</a>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.HastaneId">| Edit</a>
-
-                        <a asp-action="Delete" asp-route-id="@item.HastaneId">| Delete</a>
+                        <a asp-action="Edit" asp-route-id="@hastane.HastaneId" class="btn-primary">Düzenle</a>
+                        <a asp-action="Delete" asp-route-id="@hastane.HastaneId" class="btn-primary">Sil</a>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<br>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create" class="btn-primary">Yeni Hastane Ekle</a>
+}

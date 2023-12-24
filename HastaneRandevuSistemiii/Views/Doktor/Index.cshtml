@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HastaneRandevuSistemiii.Models.Doktor>
+﻿@*@model IEnumerable<HastaneRandevuSistemiii.Models.Doktor>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.DoktorSoyadi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PoliklinikId)
+                @Html.DisplayNameFor(model => model.Poliklinik.PoliklinikAdi)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsActive)
@@ -36,7 +36,7 @@
                     @Html.DisplayFor(modelItem => item.DoktorSoyadi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PoliklinikId)
+                    @Html.DisplayFor(modelItem => item.Poliklinik.PoliklinikAdi)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsActive)
@@ -54,3 +54,79 @@
         }
     </tbody>
 </table>
+*@
+
+
+@model IEnumerable<HastaneRandevuSistemiii.Models.Doktor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    table {
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    .btn-primary {
+        border-radius: 5px;
+        background-color: #428bca;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #337ab7;
+        }
+</style>
+
+<h1>Doktorlar</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Doktor Adı</th>
+            <th>Doktor Soyadı</th>
+            <th>Poliklinik</th>
+            <th>Aktif</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DoktorAdi</td>
+                <td>@item.DoktorSoyadi</td>
+                <td>@item.Poliklinik.PoliklinikAdi</td>
+                <td>@item.IsActive</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.DoktorId" class="btn-primary">Detaylar</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.DoktorId" class="btn-primary">Düzenle</a>
+                        <a asp-action="Delete" asp-route-id="@item.DoktorId" class="btn-primary">Sil</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br>
+<br>
+

@@ -24,7 +24,7 @@ namespace HastaneRandevuSistemiii.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.Doktors != null ?
-                        View(await _context.Doktors.ToListAsync()) :
+                        View(await _context.Doktors.Include(p=>p.Poliklinik).ToListAsync()) :
                         Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
         }
 
@@ -123,6 +123,7 @@ namespace HastaneRandevuSistemiii.Controllers
             {
                 return NotFound();
             }
+
             return View(doktor);
         }
 

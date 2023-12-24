@@ -14,7 +14,7 @@
                 @Html.DisplayNameFor(model => model.PoliklinikAdi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HastaneId)
+                @Html.DisplayNameFor(model => model.hastane.HastaneAdi)
             </th>
             <th></th>
         </tr>
@@ -27,15 +27,15 @@
                     @Html.DisplayFor(modelItem => item.PoliklinikAdi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.HastaneId)
+                    @Html.DisplayFor(modelItem => item.hastane.HastaneAdi)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.PoliklinikId">Details |</a>
+                    <a asp-action="Details" asp-route-id="@item.PoliklinikId">Details </a>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.PoliklinikId">Edit |</a>
+                        <a asp-action="Edit" asp-route-id="@item.PoliklinikId">| Edit</a>
 
-                        <a asp-action="Delete" asp-route-id="@item.PoliklinikId">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@item.PoliklinikId">| Delete</a>
                     }
                 </td>
             </tr>

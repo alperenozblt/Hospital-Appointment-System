@@ -24,8 +24,9 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Poliklinik
         public async Task<IActionResult> Index()
         {
+
               return _context.Polikliniks != null ? 
-                          View(await _context.Polikliniks.ToListAsync()) :
+                          View(await _context.Polikliniks.Include(h=>h.hastane).ToListAsync()) :
                           Problem("Entity set 'HastaneRandevuuContext.Polikliniks'  is null.");
         }
 

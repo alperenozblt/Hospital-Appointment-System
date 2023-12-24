@@ -5,7 +5,7 @@ namespace HastaneRandevuSistemiii.Models
 {
     public class Randevu
     {
-        public int RandevuID { get; set; }
+        public int RandevuId { get; set; }
 
       
         public int DoktorId { get; set; }
@@ -15,6 +15,8 @@ namespace HastaneRandevuSistemiii.Models
         public int HastaneId { get; set; }
         
         public int PoliklinikId { get; set; }
+
+        public Doktor? Doktor { get; set; }
 
         [DataType(DataType.Date), Display(Name = "Randevu Tarihi"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)]
         [Required]
