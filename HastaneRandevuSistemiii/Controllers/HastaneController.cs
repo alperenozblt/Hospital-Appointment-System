@@ -62,7 +62,7 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Create([Bind("HastaneId,HastaneAdi")] Hastane hastane)
+        public async Task<IActionResult> Create([Bind("HastaneId,HastaneAdi,HastaneTel,HastaneAddress")] Hastane hastane)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Edit(int id, [Bind("HastaneId,HastaneAdi")] Hastane hastane)
+        public async Task<IActionResult> Edit(int id, [Bind("HastaneId,HastaneAdi,HastaneTel,HastaneAddress")] Hastane hastane)
         {
             if (id != hastane.HastaneId)
             {

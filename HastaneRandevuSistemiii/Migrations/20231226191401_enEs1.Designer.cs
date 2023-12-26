@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    [Migration("20231224124750_Kt2")]
-    partial class Kt2
+    [Migration("20231226191401_enEs1")]
+    partial class enEs1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,31 +23,6 @@ namespace HastaneRandevuSistemiii.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("HastaneRandevuSistemiii.Models.CalismaGunleri", b =>
-                {
-                    b.Property<int>("CalismaGünüId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalismaGünüId"), 1L, 1);
-
-                    b.Property<int>("DoktorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Günler")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
-                    b.Property<string>("Saatler")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CalismaGünüId");
-
-                    b.ToTable("CalismaGunlerii");
-                });
 
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
                 {
@@ -67,14 +42,12 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool?>("IsActive")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
                     b.Property<int>("PoliklinikId")
                         .HasColumnType("int");
 
                     b.HasKey("DoktorId");
+
+                    b.HasIndex("PoliklinikId");
 
                     b.ToTable("Doktors");
                 });
@@ -151,7 +124,6 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TcNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -192,6 +164,8 @@ namespace HastaneRandevuSistemiii.Migrations
 
                     b.HasKey("PoliklinikId");
 
+                    b.HasIndex("HastaneId");
+
                     b.ToTable("Polikliniks");
                 });
 
@@ -212,9 +186,6 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.Property<int>("KullaniciId")
                         .HasColumnType("int");
 
-                    b.Property<string>("KullaniciId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PoliklinikId")
                         .HasColumnType("int");
 
@@ -223,7 +194,7 @@ namespace HastaneRandevuSistemiii.Migrations
 
                     b.HasKey("RandevuID");
 
-                    b.HasIndex("KullaniciId1");
+                    b.HasIndex("DoktorId");
 
                     b.ToTable("Randevus");
                 });
@@ -361,11 +332,37 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
+                {
+                    b.HasOne("HastaneRandevuSistemiii.Models.Poliklinik", "Poliklinik")
+                        .WithMany()
+                        .HasForeignKey("PoliklinikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Poliklinik");
+                });
+
+            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Poliklinik", b =>
+                {
+                    b.HasOne("HastaneRandevuSistemiii.Models.Hastane", "hastane")
+                        .WithMany()
+                        .HasForeignKey("HastaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("hastane");
+                });
+
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Randevu", b =>
                 {
-                    b.HasOne("HastaneRandevuSistemiii.Models.Kullanici", null)
-                        .WithMany("randevu")
-                        .HasForeignKey("KullaniciId1");
+                    b.HasOne("HastaneRandevuSistemiii.Models.Doktor", "Doktor")
+                        .WithMany()
+                        .HasForeignKey("DoktorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doktor");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -417,11 +414,6 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Kullanici", b =>
-                {
-                    b.Navigation("randevu");
                 });
 #pragma warning restore 612, 618
         }

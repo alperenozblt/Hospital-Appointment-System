@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HastaneRandevuSistemiii.Migrations
 {
-    public partial class mig1 : Migration
+    public partial class enEs1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,9 @@ namespace HastaneRandevuSistemiii.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    KullaniciAd = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KullaniciSoyad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TcNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -46,6 +49,19 @@ namespace HastaneRandevuSistemiii.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hastanes",
+                columns: table => new
+                {
+                    HastaneId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HastaneAdi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hastanes", x => x.HastaneId);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,8 +110,8 @@ namespace HastaneRandevuSistemiii.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -139,8 +155,8 @@ namespace HastaneRandevuSistemiii.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -151,6 +167,70 @@ namespace HastaneRandevuSistemiii.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Polikliniks",
+                columns: table => new
+                {
+                    PoliklinikId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PoliklinikAdi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    HastaneId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Polikliniks", x => x.PoliklinikId);
+                    table.ForeignKey(
+                        name: "FK_Polikliniks_Hastanes_HastaneId",
+                        column: x => x.HastaneId,
+                        principalTable: "Hastanes",
+                        principalColumn: "HastaneId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Doktors",
+                columns: table => new
+                {
+                    DoktorId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DoktorAdi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DoktorSoyadi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PoliklinikId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Doktors", x => x.DoktorId);
+                    table.ForeignKey(
+                        name: "FK_Doktors_Polikliniks_PoliklinikId",
+                        column: x => x.PoliklinikId,
+                        principalTable: "Polikliniks",
+                        principalColumn: "PoliklinikId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Randevus",
+                columns: table => new
+                {
+                    RandevuID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DoktorId = table.Column<int>(type: "int", nullable: false),
+                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    HastaneId = table.Column<int>(type: "int", nullable: false),
+                    PoliklinikId = table.Column<int>(type: "int", nullable: false),
+                    RandevuTarih = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Randevus", x => x.RandevuID);
+                    table.ForeignKey(
+                        name: "FK_Randevus_Doktors_DoktorId",
+                        column: x => x.DoktorId,
+                        principalTable: "Doktors",
+                        principalColumn: "DoktorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -192,6 +272,21 @@ namespace HastaneRandevuSistemiii.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doktors_PoliklinikId",
+                table: "Doktors",
+                column: "PoliklinikId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Polikliniks_HastaneId",
+                table: "Polikliniks",
+                column: "HastaneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Randevus_DoktorId",
+                table: "Randevus",
+                column: "DoktorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,10 +307,22 @@ namespace HastaneRandevuSistemiii.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Randevus");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Doktors");
+
+            migrationBuilder.DropTable(
+                name: "Polikliniks");
+
+            migrationBuilder.DropTable(
+                name: "Hastanes");
         }
     }
 }

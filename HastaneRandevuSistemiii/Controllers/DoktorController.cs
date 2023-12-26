@@ -24,7 +24,7 @@ namespace HastaneRandevuSistemiii.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.Doktors != null ?
-                        View(await _context.Doktors.ToListAsync()) :
+                        View(await _context.Doktors.Include(p=>p.Poliklinik.hastane).ToListAsync()) :
                         Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
         }
 
@@ -37,6 +37,7 @@ namespace HastaneRandevuSistemiii.Controllers
             }
 
             var doktor = await _context.Doktors
+                .Include(p=>p.Poliklinik.hastane)
                 .FirstOrDefaultAsync(m => m.DoktorId == id);
             if (doktor == null)
             {
@@ -97,7 +98,6 @@ namespace HastaneRandevuSistemiii.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
-            return View(doktor);
         }
 
         // GET: Doktor/GetPoliklinikler
@@ -138,7 +138,7 @@ namespace HastaneRandevuSistemiii.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Edit(int id, [Bind("DoktorId,DoktorAdi,DoktorSoyadi,PoliklinikId,IsActive")] Doktor doktor)
+        public async Task<IActionResult> Edit(int id, [Bind("DoktorId,DoktorAdi,DoktorSoyadi,PoliklinikId")] Doktor doktor)
         {
             if (id != doktor.DoktorId)
             {
@@ -179,6 +179,7 @@ namespace HastaneRandevuSistemiii.Controllers
             }
 
             var doktor = await _context.Doktors
+                .Include(p => p.Poliklinik)
                 .FirstOrDefaultAsync(m => m.DoktorId == id);
             if (doktor == null)
             {

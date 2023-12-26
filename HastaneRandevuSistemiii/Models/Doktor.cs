@@ -12,12 +12,10 @@ namespace HastaneRandevuSistemiii.Models
         [Required]
         [MaxLength(100)]
         public string DoktorSoyadi { get; set; }
-
-     
+ 
         public int PoliklinikId { get; set; }
         
         public Poliklinik? Poliklinik { get; set; }
-        public bool? IsActive { get; set; }
-        
+           
     }
 }

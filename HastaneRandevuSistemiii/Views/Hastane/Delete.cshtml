@@ -1,27 +1,87 @@
-﻿@model HastaneRandevuSistemiii.Models.Hastane
+﻿@*@model HastaneRandevuSistemiii.Models.Hastane
+
+@{
+	ViewData["Title"] = "Delete";
+}
+<link rel="stylesheet" href="~/css/Index.css" />
+
+
+<h1>Delete</h1>
+
+<h3>Silmek istediğinize emin misiniz?</h3>
+<div>
+	<h4>Hastane</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.HastaneAdi)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.HastaneAdi)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.HastaneTel)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.HastaneTel)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.HastaneAddress)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.HastaneAddress)
+		</dd>
+
+	</dl>
+
+	<form asp-action="Delete">
+		<input type="hidden" asp-for="HastaneId" />
+		<input type="submit" value="Delete" class="btn btn-danger" /> |
+		<a asp-action="Index">Back to List</a>
+	</form>
+</div>
+*@
+
+@model HastaneRandevuSistemiii.Models.Hastane
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Hastane</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HastaneAdi)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HastaneAdi)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
+
+<h1>Hastane Sil</h1>
+
+<div class="container">
+    <h3>Silmek istediğinize emin misiniz?</h3>
+    <div class="hospital-details">
+        <h4>Hastane Bilgileri</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HastaneAdi)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HastaneAdi)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HastaneTel)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HastaneTel)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.HastaneAddress)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HastaneAddress)
+            </dd>
+        </dl>
+    </div>
+
+    <form asp-action="Delete" onsubmit="return confirm('Hastaneyi silmek istediğinize emin misiniz?')">
         <input type="hidden" asp-for="HastaneId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
     </form>
 </div>

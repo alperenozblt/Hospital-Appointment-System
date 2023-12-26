@@ -16,6 +16,8 @@ namespace HastaneRandevuSistemiii.Models
         
         public int PoliklinikId { get; set; }
 
+        public Doktor? Doktor { get; set;}
+
         [DataType(DataType.Date), Display(Name = "Randevu Tarihi"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime RandevuTarih { get; set; }

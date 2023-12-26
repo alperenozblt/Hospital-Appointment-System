@@ -18,16 +18,16 @@
             @Html.DisplayFor(model => model.PoliklinikAdi)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HastaneId)
+            @Html.DisplayNameFor(model => model.hastane.HastaneAdi)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HastaneId)
+            @Html.DisplayFor(model => model.hastane.HastaneAdi)
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+   <form asp-action="Delete" onsubmit="return confirm('Hastaneyi silmek istediğinize emin misiniz?')">
         <input type="hidden" asp-for="PoliklinikId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
     </form>
 </div>

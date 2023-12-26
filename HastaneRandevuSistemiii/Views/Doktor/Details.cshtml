@@ -1,4 +1,4 @@
-﻿@model HastaneRandevuSistemiii.Models.Doktor
+﻿@*@model HastaneRandevuSistemiii.Models.Doktor
 
 @{
     ViewData["Title"] = "Details";
@@ -23,20 +23,107 @@
             @Html.DisplayFor(model => model.DoktorSoyadi)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PoliklinikId)
+            @Html.DisplayNameFor(model => model.Poliklinik.PoliklinikAdi)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PoliklinikId)
+            @Html.DisplayFor(model => model.Poliklinik.PoliklinikAdi)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
+
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.DoktorId">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+*@
+@model HastaneRandevuSistemiii.Models.Doktor
+
+<style>
+	.doctor-card {
+		width: 500px;
+		margin: 80px auto 0; /* Üst taraftan 80px boşluk, alttan 0 boşluk */
+		padding: 20px;
+		border: 1px solid #ccc;
+		box-shadow: 0 0 10px #ccc;
+		background-color: #f5f5f5;
+		border-radius: 10px;
+		text-align: center;
+	}
+
+		.doctor-card .image {
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+			margin: 0 auto;
+			overflow: hidden;
+		}
+
+			.doctor-card .image img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+		.doctor-card .info {
+			margin-top: 20px;
+		}
+
+			.doctor-card .info h4 {
+				font-size: 20px;
+				margin-bottom: 10px;
+				font-weight: bold;
+			}
+
+			.doctor-card .info ul {
+				list-style: none;
+				padding: 0;
+			}
+
+			.doctor-card .info li {
+				margin-bottom: 5px;
+			}
+
+			.doctor-card .info dt {
+				font-weight: bold;
+				margin-right: 10px;
+			}
+
+			.doctor-card .info dd {
+				color: #999;
+			}
+
+		.doctor-card .links {
+			margin-top: 20px;
+		}
+
+			.doctor-card .links a {
+				color: #007bff;
+				text-decoration: none;
+				margin-right: 10px;
+			}
+</style>
+
+<div class="doctor-card">
+	<div class="image">
+		<img src="~/img/korhantemiz.jpg" />
+
+	</div>
+	<div class="info">
+		<h4>@Model.DoktorAdi @Model.DoktorSoyadi</h4>
+		<ul>
+			<li>
+		<dt>Hastane:</dt>
+		<dd>@Model.Poliklinik.hastane.HastaneAdi</dd>
+		</li>
+			<li>
+		<dt>Poliklinik:</dt>
+		<dd>@Model.Poliklinik.PoliklinikAdi</dd>
+			</li>
+		
+		</ul>
+	</div>
+	<div class="links">
+		<a asp-action="Edit" asp-route-id="@Model?.DoktorId">Edit</a> |
+		<a asp-action="Index">Back to List</a>
+	</div>
 </div>

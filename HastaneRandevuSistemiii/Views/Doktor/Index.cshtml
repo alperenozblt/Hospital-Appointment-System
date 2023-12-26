@@ -17,11 +17,9 @@
                 @Html.DisplayNameFor(model => model.DoktorSoyadi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PoliklinikId)
+                @Html.DisplayNameFor(model => model.Poliklinik.PoliklinikAdi)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
+   
             <th></th>
         </tr>
     </thead>
@@ -36,11 +34,9 @@
                     @Html.DisplayFor(modelItem => item.DoktorSoyadi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PoliklinikId)
+                    @Html.DisplayFor(modelItem => item.Poliklinik.PoliklinikAdi)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
+     
                 <td>
                     <a asp-action="Details" asp-route-id="@item.DoktorId" class="btn-primary">Detaylar</a>
                     @if (User.IsInRole("Admin"))

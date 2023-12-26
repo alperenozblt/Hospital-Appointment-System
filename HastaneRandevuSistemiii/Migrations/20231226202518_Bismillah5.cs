@@ -4,7 +4,7 @@
 
 namespace HastaneRandevuSistemiii.Migrations
 {
-    public partial class deneme100 : Migration
+    public partial class Bismillah5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

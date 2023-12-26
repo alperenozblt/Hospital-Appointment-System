@@ -4,6 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
+
 <h1>Edit</h1>
 
 <h4>Hastane</h4>
@@ -13,11 +14,21 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="HastaneId" />
-            <div class="form-group">
-                <label asp-for="HastaneAdi" class="control-label"></label>
-                <input asp-for="HastaneAdi" class="form-control" />
-                <span asp-validation-for="HastaneAdi" class="text-danger"></span>
-            </div>
+			<div class="form-group">
+				<label asp-for="HastaneAdi" class="control-label"></label>
+				<input asp-for="HastaneAdi" class="form-control" />
+				<span asp-validation-for="HastaneAdi" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="HastaneTel" class="control-label"></label>
+				<input asp-for="HastaneTel" class="form-control" />
+				<span asp-validation-for="HastaneTel" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="HastaneAddress" class="control-label"></label>
+				<input asp-for="HastaneAddress" class="form-control" />
+				<span asp-validation-for="HastaneAddress" class="text-danger"></span>
+			</div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
