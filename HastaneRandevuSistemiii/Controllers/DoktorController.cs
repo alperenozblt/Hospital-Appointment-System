@@ -113,6 +113,11 @@ namespace HastaneRandevuSistemiii.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+            var hastaneler = _context.Hastanes.ToList();
+            ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi");
+
+            var poliklinikler = new List<Poliklinik>();
+            ViewBag.Poliklinikler = new SelectList(poliklinikler, "PoliklinikId", "PoliklinikAdi");
             if (id == null || _context.Doktors == null)
             {
                 return NotFound();

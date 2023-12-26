@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
+<link rel="stylesheet" href="~/css/Index.css" />
+<h1>Doktorlar</h1>
 
 
 <table class="table">
@@ -42,15 +42,23 @@
                     @Html.DisplayFor(modelItem => item.IsActive)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.DoktorId">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.DoktorId" class="btn-primary">Detaylar</a>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.DoktorId">| Edit</a>
+                       
+                      <a asp-action="Edit" asp-route-id="@item.DoktorId" class="btn-primary">Düzenle</a>
 
-                        <a asp-action="Delete" asp-route-id="@item.DoktorId">| Delete</a>
+                      <a asp-action="Delete" asp-route-id="@item.DoktorId" class="btn-primary">Sil</a>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<br />
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create" class="btn-primary">Yeni Doktor Ekle</a>
+}

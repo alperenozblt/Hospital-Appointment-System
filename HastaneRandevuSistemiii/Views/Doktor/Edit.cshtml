@@ -24,8 +24,15 @@
                 <span asp-validation-for="DoktorSoyadi" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PoliklinikId" class="control-label"></label>
-                <input asp-for="PoliklinikId" class="form-control" />
+                <label asp-for="Poliklinik.HastaneId" class="control-label">Hastane</label>
+                <select asp-for="Poliklinik.HastaneId" class="form-control" asp-items="ViewBag.Hastanes" onchange="GetPoliklinikler(this.value)">
+                    <option value="">Seçiniz</option>
+                </select>
+                <span asp-validation-for="Poliklinik.HastaneId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PoliklinikId" class="control-label">Poliklinik</label>
+                <select asp-for="PoliklinikId" class="form-control" asp-items="ViewBag.Poliklinikler"></select>
                 <span asp-validation-for="PoliklinikId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,5 +52,27 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function GetPoliklinikler(hastaneId) {
+            $.ajax({
+                url: '@Url.Action("GetPoliklinikler", "Doktor")',
+                data: { hastaneId: hastaneId },
+                type: 'GET',
+                success: function (poliklinikler) {
+                    $("#PoliklinikId").empty(); // Önceki seçenekleri temizle
+                    $("#PoliklinikId").append($('<option value="">Seçiniz</option>'));
+                    $.each(poliklinikler, function (index, poliklinik) {
+                        $("#PoliklinikId").append($('<option value="' + poliklinik.poliklinikId + '">' + poliklinik.poliklinikAdi + '</option>'));
+                    });
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    </script>
 }
