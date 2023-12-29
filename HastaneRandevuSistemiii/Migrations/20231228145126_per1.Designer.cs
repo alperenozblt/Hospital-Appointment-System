@@ -4,6 +4,7 @@ using HastaneRandevuSistemiii.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    partial class HastaneRandevuuContextModelSnapshot : ModelSnapshot
+    [Migration("20231228145126_per1")]
+    partial class per1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,15 +192,11 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.Property<int>("HastaneId")
                         .HasColumnType("int");
 
-                    b.Property<string>("KullaniciId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("KullaniciId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PoliklinikId")
                         .HasColumnType("int");
-
-                    b.Property<TimeSpan>("RandevuSaat")
-                        .HasColumnType("time");
 
                     b.Property<DateTime>("RandevuTarih")
                         .HasColumnType("datetime2");
@@ -368,7 +366,7 @@ namespace HastaneRandevuSistemiii.Migrations
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Randevu", b =>
                 {
                     b.HasOne("HastaneRandevuSistemiii.Models.Doktor", "Doktor")
-                        .WithMany("Randevu")
+                        .WithMany()
                         .HasForeignKey("DoktorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -425,11 +423,6 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
-                {
-                    b.Navigation("Randevu");
                 });
 #pragma warning restore 612, 618
         }

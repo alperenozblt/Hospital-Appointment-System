@@ -7,15 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
     public class RandevuController : Controller
     {
         private readonly HastaneRandevuuContext _context;
+        private readonly SignInManager<Kullanici> _signInManager;
 
-        public RandevuController(HastaneRandevuuContext context)
+
+        public RandevuController(HastaneRandevuuContext context, SignInManager<Kullanici> signInManager)
         {
+            _signInManager = signInManager;
             _context = context;
         }
 
@@ -23,7 +27,7 @@ namespace HastaneRandevuSistemiii.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Randevus != null ? 
-                          View(await _context.Randevus.ToListAsync()) :
+                          View(await _context.Randevus.Include(p=>p.Doktor).ToListAsync()) :
                           Problem("Entity set 'HastaneRandevuuContext.Randevus'  is null.");
         }
 
@@ -45,9 +49,32 @@ namespace HastaneRandevuSistemiii.Controllers
             return View(randevu);
         }
 
-        // GET: Randevu/Create
-        public IActionResult Create()
+
+
+
+
+
+
+    //    var randevuVar = _context.Randevus.FirstOrDefault(x => x.RandevuTarih == randevu.RandevuTarih && x.RandevuSaat == randevu.RandevuSaat);
+    //            if (randevuVar != null)
+    //            {
+    //               // ModelState.AddModelError("Randevu zaten alınmış.");
+    //                return View(randevu);
+    //}
+
+
+
+    // GET: Randevu/Create
+    public IActionResult Create()
         {
+
+
+            var hastaneler =_context.Hastanes.ToList();
+            ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi");
+
+
+
+
             return View();
         }
 
@@ -56,11 +83,15 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RandevuID,DoktorId,KullaniciId,HastaneId,RandevuTarih")] Randevu randevu)
+        public async Task<IActionResult> Create( Randevu randevu)
         {
+
+           randevu.KullaniciId =_signInManager.UserManager.GetUserId(User);
+
+
             if (ModelState.IsValid)
             {
-                _context.Add(randevu);
+                _context.Add(randevu); 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

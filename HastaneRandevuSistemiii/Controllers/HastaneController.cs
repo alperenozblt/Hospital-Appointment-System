@@ -9,6 +9,7 @@ using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -24,25 +25,26 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Hastane
         public async Task<IActionResult> Index()
         {
-              return _context.Hastanes != null ? 
-                          View(await _context.Hastanes.ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Hastanes'  is null.");
+            List<Hastane> hastaneler = _context.Hastanes.ToList();
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7020/api/SystemApi");
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            hastaneler = JsonConvert.DeserializeObject<List<Hastane>>(jsonResponse);
+
+
+            return View(hastaneler);
         }
 
         // GET: Hastane/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Hastanes == null)
-            {
-                return NotFound();
-            }
+            Hastane hastane = _context.Hastanes.Where(x => x.HastaneId == id).First();
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7020/api/SystemApi/id");
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            ViewBag.Hastane = jsonResponse;
 
-            var hastane = await _context.Hastanes
-                .FirstOrDefaultAsync(m => m.HastaneId == id);
-            if (hastane == null)
-            {
-                return NotFound();
-            }
+            //  hastane = JsonConvert.DeserializeObject<Hastane>(jsonResponse);
 
             return View(hastane);
         }
@@ -94,38 +96,41 @@ namespace HastaneRandevuSistemiii.Controllers
         // POST: Hastane/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Edit(int id, [Bind("HastaneId,HastaneAdi,HastaneTel,HastaneAddress")] Hastane hastane)
         {
-            if (id != hastane.HastaneId)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(hastane);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!HastaneExists(hastane.HastaneId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                // API'den hastane bilgilerini al
+                var client = new HttpClient();
+                var response = await client.GetAsync("https://localhost:7020/api/SystemApi/id={id}");
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var apiHastane = JsonConvert.DeserializeObject<Hastane>(jsonResponse);
+
+                // API'den gelen bilgileri modele aktar
+                hastane.HastaneAdi = apiHastane.HastaneAdi;
+                hastane.HastaneTel = apiHastane.HastaneTel;
+                hastane.HastaneAddress = apiHastane.HastaneAddress;
+
+                // Modeli database'e kaydet
+                _context.Update(hastane);
+                await _context.SaveChangesAsync();
+
+                // View'a bir mesaj gönder
+                ViewData["Mesaj"] = "Hastane bilgileri başarıyla güncellendi.";
+
+                // View'a hastane bilgilerini gönder
+                return  View(hastane);
             }
-            return View(hastane);
+            catch (Exception ex)
+            {
+                // API çağrısında hata olursa
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: Hastane/Delete/5

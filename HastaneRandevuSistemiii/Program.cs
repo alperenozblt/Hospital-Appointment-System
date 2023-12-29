@@ -2,6 +2,8 @@ using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,12 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 3;
 });
 
+var options = new JsonSerializerOptions()
+{
+    ReferenceHandler = ReferenceHandler.Preserve,
+};
+
+//var json = JsonSerializer.Serialize(obj, options);
 
 //  builder.Services.ConfigureApplicationCookie(options=>
 //  options.AccessDeniedPath=)

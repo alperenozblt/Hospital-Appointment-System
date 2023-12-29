@@ -16,6 +16,7 @@ namespace HastaneRandevuSistemiii.Models
         public int PoliklinikId { get; set; }
         
         public Poliklinik? Poliklinik { get; set; }
+        public ICollection<Randevu>? Randevu { get; set;}
            
     }
 }
