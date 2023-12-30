@@ -1,5 +1,119 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+    ViewBag.Title = "Anasayfa";
 }
+
+
+    <style>
+        .button2 {
+            background-color: DeepSkyBlue; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+        } 
+        .button2:hover {
+            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+        }
+        .button2 {
+            border-radius: 12px;
+        }
+    </style>
+        <center>
+            <div>
+                <img class="img-fluid" src="~/img/foto1.png" alt="Trulli" width="1200" height="500">
+                <a asp-controller="Poliklinik" asp-action="Index" type="button" style=" padding: 15px 32px; font-size: 16px; margin-top: -200px; margin-bottom: 200px; margin-right: 150px; margin-left: 900px;" class="btn btn-primary btn-lg">Birimler</a>
+                <a asp-controller="Doktor" asp-action="Index" type="button" style=" padding: 15px 26px; font-size: 16px; margin-top: -170px; margin-bottom: 200px; margin-right: 150px; margin-left: 900px;" class="btn btn-primary btn-lg">Hekimlerimiz</a>
+            </div>
+        </center>
+       
+        <center><p style="margin-top: -120px; margin-left: 30px; font-size: 32px; color:DodgerBlue;">HASTANELERİMİZ</p></center>
+        <center><hr style="color:darkblue" width="400" /></center>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/corumdevlet.jpg" alt="Card image">
+                <div class="card-body" style="background-color:antiquewhite">
+                    <center><h4 class="card-title">ÇORUM DEVLET HASTANESİ</h4></center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/1507286409_1.jpg" alt="Card image">
+                <div class="card-body" style="background-color:antiquewhite">
+                    <center><h4 class="card-title">ÇORUM ELİTPARK HASTANESİ</h4></center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/sakaryadevlet.jpg" alt="Card image">
+                <div class="card-body" style="background-color:antiquewhite">
+                    <center><h4 class="card-title">SAKARYA DEVLET HASTANESİ</h4></center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-4" style="background-color:MidnightBlue"><img class="card-img-top" src="~/img/corumdevlet.jpg" alt="Card image" style="width:100%"></div>
+            <div class="col-sm-8 " style="background-color:MidnightBlue"><br /><h2 style="color:white;">Çorum Devlet Hastanesi, Hizmetinizde!</h2> <hr style="color:Aqua; " /><br /><p style="color:white; font-size: 16px">Çorum Devlet Hastanesi, hasta deneyimini ön plana çıkaran özel mimarisi, güçlü akademik hekim kadrosu, multidisipliner tanı ve tedavi yöntemleri ve modern teknik altyapısı ile hizmetinizde.</p></div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-8 " style="background-color:MidnightBlue"><br /><h2 style="color:white;">Sakarya Devlet Hastanesi, Hizmetinizde!</h2> <hr style="color:Aqua;" /><br /><p style="color:white; font-size: 16px">Sakarya Devlet Hastanesi, teknik alt yapısı, tıbbi teknolojisi, tüm branşlarda uzman sağlık profesyonelleri ve multidisipliner yaklaşımla pek çok özellikli birimi bünyesinde bulunduruyor. Onkoloji'den Beyin Cerrahi'sine, Organ Naklinden Robotik Cerrahi'ye kadar bir çok özellikli birim konumlanıyor</p></div>
+             <div class="col-sm-4" style="background-color:MidnightBlue"><img class="card-img-top" src="~/img/sakaryadevlet.jpg" alt="Card image" style="width:100%"></div>
+        </div>
+        <br />
+        <div class="row">
+    <div class="col-sm-4" style="background-color:MidnightBlue"><img class="card-img-top" src="~/img/1507286409_1.jpg" alt="Card image" style="width:100%"></div>
+    <div class="col-sm-8 " style="background-color:MidnightBlue"><br /><h2 style="color:white;">Çorum Elitpark Hastanesi, Hizmetinizde!</h2> <hr style="color:Aqua;" /><br /><p style="color:white; font-size: 16px">Çorum Elitpark Hastanesi, hasta deneyimini ön plana çıkaran özel mimarisi, güçlü akademik hekim kadrosu, multidisipliner tanı ve tedavi yöntemleri ve modern teknik altyapısı ile hizmetinizde.</p></div>
+            
+        </div>
+       
+        <center><hr style="color:darkblue" width="400" /></center>
+        <center><h2>HABERLER</h2></center>
+        <center><hr style="color:darkblue" width="400" /></center>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/haber1.png" alt="Card image">
+                <div class="card-body" style="background-color:MidnightBlue">
+                    <center><h4 class="card-title" style="color:aqua">Hastane Uzmanlarından Uyarılar</h4></center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/haber2.png" alt="Card image">
+                <div class="card-body" style="background-color:MidnightBlue">
+                    <center><h4 class="card-title" style="color:aqua">Kış Mevsiminde Beslenme Önem Taşıyor!</h4></center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/haber3.png" alt="Card image">
+                <div class="card-body" style="background-color:MidnightBlue">
+                    <center><h4 class="card-title" style="color:aqua">Dikkat o hastalığa yakalanmış olabilirsiniz</h4></center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 

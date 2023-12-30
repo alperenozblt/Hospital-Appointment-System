@@ -86,7 +86,7 @@ namespace HastaneRandevuSistemiii.Controllers
         public async Task<IActionResult> Create( Randevu randevu)
         {
 
-           randevu.KullaniciId =_signInManager.UserManager.GetUserId(User);
+            Kullanici kullanici = await _signInManager.UserManager.GetUserAsync(User);
 
 
             if (ModelState.IsValid)
