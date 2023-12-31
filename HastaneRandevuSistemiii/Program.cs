@@ -27,10 +27,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 3;
 });
 
-var options = new JsonSerializerOptions()
-{
-    ReferenceHandler = ReferenceHandler.Preserve,
-};
+
 
 //var json = JsonSerializer.Serialize(obj, options);
 

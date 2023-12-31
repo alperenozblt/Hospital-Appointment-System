@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -20,16 +22,21 @@ namespace HastaneRandevuSistemiii.Controllers
             _context = context;
         }
 
-        // GET: Doktor
-        public async Task<IActionResult> Index()
-        {
-            return _context.Doktors != null ?
-                        View(await _context.Doktors.Include(p=>p.Poliklinik.hastane).ToListAsync()) :
-                        Problem("Entity set 'HastaneRandevuuContext.Doktors'  is null.");
-        }
+		// GET: Doktor
+		public async Task<IActionResult> Index()
+		{
+			List<Doktor> doktorlar = new List<Doktor>();
+			HttpClient client = new HttpClient();
+			var response = await client.GetAsync("https://localhost:7020/api/DoktorApi");
+			var jsonResponse = await response.Content.ReadAsStringAsync();
+			doktorlar = JsonConvert.DeserializeObject<List<Doktor>>(jsonResponse);
 
-        // GET: Doktor/Details/5
-        public async Task<IActionResult> Details(int? id)
+			return View(doktorlar);
+		}
+
+
+		// GET: Doktor/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Doktors == null)
             {
@@ -43,14 +50,22 @@ namespace HastaneRandevuSistemiii.Controllers
             {
                 return NotFound();
             }
+			HttpClient client = new HttpClient();
 
-            return View(doktor);
+			var response = await client.GetAsync("https://localhost:7020/api/DoktorApi/id");
+			var jsonResponse = await response.Content.ReadAsStringAsync();
+			doktor = JsonConvert.DeserializeObject<Doktor>(jsonResponse);
+
+
+			return View(doktor);
         }
 
         // GET: Doktor/Create
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+
+
             var hastaneler = _context.Hastanes.ToList();
             ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi");
 
@@ -71,8 +86,18 @@ namespace HastaneRandevuSistemiii.Controllers
         public async Task<IActionResult> Create(Doktor doktor)
         {
 
+			HttpClient client = new HttpClient();
+			var json = JsonConvert.SerializeObject(doktor);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var hastane = await _context.Hastanes.FindAsync(doktor.Poliklinik.HastaneId);
+			var response = await client.PostAsync("https://localhost:7020/api/DoktorApi/", content);
+			var jsonResponse = await response.Content.ReadAsStringAsync();
+			doktor = JsonConvert.DeserializeObject<Doktor>(jsonResponse);
+			
+
+
+
+			var hastane = await _context.Hastanes.FindAsync(doktor.Poliklinik.HastaneId);
             if (hastane == null)
             {
                 ModelState.AddModelError("HastaneId", "Geçersiz HastaneId");
@@ -94,9 +119,8 @@ namespace HastaneRandevuSistemiii.Controllers
                 PoliklinikId = poliklinik.PoliklinikId,
 
             };
-                _context.Add(dokt);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+			return View(doktor);
 
         }
 
@@ -140,7 +164,28 @@ namespace HastaneRandevuSistemiii.Controllers
 
         public async Task<IActionResult> Edit(int id, [Bind("DoktorId,DoktorAdi,DoktorSoyadi,PoliklinikId")] Doktor doktor)
         {
-            if (id != doktor.DoktorId)
+			HttpClient client = new HttpClient();
+			// Güncellemek istediğiniz kaydı içeren bir JSON nesnesi oluşturun
+			var json = JsonConvert.SerializeObject(doktor);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+			// PutAsync() yöntemini kullanarak kaydı güncelleyin
+			
+			var response = await client.PutAsync($"https://localhost:7020/api/DoktorApi/{id}", content);
+			// Güncelleme işleminin sonucunu kontrol edin
+			if (response.IsSuccessStatusCode)
+			{
+				// Güncelleme başarılı
+				ViewData["mesaj"] = "Doktor başarıyla güncellendi.";
+			}
+			else
+			{
+				// Güncelleme başarısız
+				ViewData["mesaj"] = "Doktor güncellenemedi.";
+			}
+			return View(doktor);
+
+			if (id != doktor.DoktorId)
             {
                 return NotFound();
             }
@@ -165,7 +210,7 @@ namespace HastaneRandevuSistemiii.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(doktor);
+          
         }
 
         // GET: Doktor/Delete/5

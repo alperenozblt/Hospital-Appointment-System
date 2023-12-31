@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    [Migration("20231226201944_Bismillah4")]
-    partial class Bismillah4
+    [Migration("20231231145422_denedikmi")]
+    partial class denedikmi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -192,8 +192,9 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.Property<int>("HastaneId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KullaniciId")
-                        .HasColumnType("int");
+                    b.Property<string>("KullaniciId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PoliklinikId")
                         .HasColumnType("int");
@@ -355,7 +356,7 @@ namespace HastaneRandevuSistemiii.Migrations
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Poliklinik", b =>
                 {
                     b.HasOne("HastaneRandevuSistemiii.Models.Hastane", "hastane")
-                        .WithMany()
+                        .WithMany("Polikliniks")
                         .HasForeignKey("HastaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -366,7 +367,7 @@ namespace HastaneRandevuSistemiii.Migrations
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Randevu", b =>
                 {
                     b.HasOne("HastaneRandevuSistemiii.Models.Doktor", "Doktor")
-                        .WithMany()
+                        .WithMany("Randevu")
                         .HasForeignKey("DoktorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -423,6 +424,16 @@ namespace HastaneRandevuSistemiii.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
+                {
+                    b.Navigation("Randevu");
+                });
+
+            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Hastane", b =>
+                {
+                    b.Navigation("Polikliniks");
                 });
 #pragma warning restore 612, 618
         }

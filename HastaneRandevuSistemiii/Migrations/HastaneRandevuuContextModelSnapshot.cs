@@ -197,9 +197,6 @@ namespace HastaneRandevuSistemiii.Migrations
                     b.Property<int>("PoliklinikId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("RandevuSaat")
-                        .HasColumnType("time");
-
                     b.Property<DateTime>("RandevuTarih")
                         .HasColumnType("datetime2");
 
@@ -357,7 +354,7 @@ namespace HastaneRandevuSistemiii.Migrations
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Poliklinik", b =>
                 {
                     b.HasOne("HastaneRandevuSistemiii.Models.Hastane", "hastane")
-                        .WithMany()
+                        .WithMany("Polikliniks")
                         .HasForeignKey("HastaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -430,6 +427,11 @@ namespace HastaneRandevuSistemiii.Migrations
             modelBuilder.Entity("HastaneRandevuSistemiii.Models.Doktor", b =>
                 {
                     b.Navigation("Randevu");
+                });
+
+            modelBuilder.Entity("HastaneRandevuSistemiii.Models.Hastane", b =>
+                {
+                    b.Navigation("Polikliniks");
                 });
 #pragma warning restore 612, 618
         }

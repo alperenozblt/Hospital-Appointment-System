@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HastaneRandevuSistemiii.Migrations
 {
-    public partial class enEs1 : Migration
+    public partial class denedikmi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,7 +57,9 @@ namespace HastaneRandevuSistemiii.Migrations
                 {
                     HastaneId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HastaneAdi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    HastaneAdi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    HastaneAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    HastaneTel = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +220,7 @@ namespace HastaneRandevuSistemiii.Migrations
                     RandevuID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DoktorId = table.Column<int>(type: "int", nullable: false),
-                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    KullaniciId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HastaneId = table.Column<int>(type: "int", nullable: false),
                     PoliklinikId = table.Column<int>(type: "int", nullable: false),
                     RandevuTarih = table.Column<DateTime>(type: "datetime2", nullable: false)
