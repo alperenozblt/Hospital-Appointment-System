@@ -9,6 +9,7 @@ using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace HastaneRandevuSistemiii.Controllers
 {
@@ -24,10 +25,15 @@ namespace HastaneRandevuSistemiii.Controllers
         // GET: Poliklinik
         public async Task<IActionResult> Index()
         {
-              return _context.Polikliniks != null ? 
-                          View(await _context.Polikliniks.Include(h=>h.hastane).ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Polikliniks'  is null.");
-        }
+			List<Poliklinik> poliklinik = new List<Poliklinik>();
+			HttpClient client = new HttpClient();
+			var response = await client.GetAsync("https://localhost:7020/api/PoliklinikApi");
+			var jsonResponse = await response.Content.ReadAsStringAsync();
+           poliklinik = JsonConvert.DeserializeObject<List<Poliklinik>>(jsonResponse);
+            // ViewBag.Poliklinik = poliklinik;
+            ViewData["Hastaneler"] = _context.Hastanes.ToList();
+            return View(poliklinik);
+		}
 
         // GET: Poliklinik/Details/5
         public async Task<IActionResult> Details(int? id)

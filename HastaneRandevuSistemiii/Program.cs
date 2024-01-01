@@ -28,6 +28,11 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 
+// ...
+
+JsonSerializerOptions options = new JsonSerializerOptions();
+options.ReferenceHandler = ReferenceHandler.Preserve;
+
 
 //var json = JsonSerializer.Serialize(obj, options);
 

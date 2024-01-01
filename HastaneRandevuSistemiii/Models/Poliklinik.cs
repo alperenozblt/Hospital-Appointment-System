@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HastaneRandevuSistemiii.Models
 {
@@ -12,8 +13,10 @@ namespace HastaneRandevuSistemiii.Models
         
         public int HastaneId { get; set; }
 
+        [JsonIgnore]
         public Hastane? hastane { get; set; }
 
-       
-    }
+		public List<Doktor>? Doktor { get; set; }
+
+	}
 }

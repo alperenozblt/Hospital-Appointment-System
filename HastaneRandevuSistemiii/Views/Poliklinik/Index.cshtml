@@ -1,7 +1,9 @@
-﻿@model IEnumerable<HastaneRandevuSistemiii.Models.Poliklinik>
+﻿ @model IEnumerable<HastaneRandevuSistemiii.Models.Poliklinik>
 
 @{
     ViewData["Title"] = "Index";
+    var hastaneler = ViewData["Hastaneler"] as List<Hastane>;
+
 }
 <link rel="stylesheet" href="~/css/Index.css" />
 <h1>Poliklinikler</h1>
@@ -27,7 +29,10 @@
                     @Html.DisplayFor(modelItem => item.PoliklinikAdi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.hastane.HastaneAdi)
+                    @{
+                        var hastane = hastaneler.Where(x => x.HastaneId == item.HastaneId).FirstOrDefault();    
+                    }
+                    @hastane.HastaneAdi
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.PoliklinikId" class="btn-primary">Detay </a>
