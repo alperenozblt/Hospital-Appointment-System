@@ -50,12 +50,12 @@
 
 
 
-<h1>Hastane Sil</h1>
+<h1 name="HastaneSil">@_localization.Getkey("Hastane Sil").Value</h1>
 
 <div class="container">
-    <h3>Silmek istediğinize emin misiniz?</h3>
+    
     <div class="hospital-details">
-        <h4>Hastane Bilgileri</h4>
+        <h4 name="HastaneBilgileri">@_localization.Getkey("Hastane Bilgileri").Value</h4>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -81,7 +81,7 @@
 
     <form asp-action="Delete" onsubmit="return confirm('Hastaneyi silmek istediğinize emin misiniz?')">
         <input type="hidden" asp-for="HastaneId" />
-        <button type="submit" class="btn btn-danger">Sil</button>
-        <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+        <button type="submit"name="Sil" class="btn btn-danger">@_localization.Getkey("Sil")</button>
+        <a asp-action="Index" class="btn btn-primary" id="dön">@_localization.Getkey("Listeye Geri Dön").Value</a>
     </form>
 </div>

@@ -12,36 +12,70 @@ using Microsoft.AspNetCore.Identity.UI.V5.Pages.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using Microsoft.Extensions.Localization;
+using HastaneRandevuSistemiii.Services;
+using Microsoft.AspNetCore.Localization;
 
 
 namespace HastaneRandevuSistemiii.Controllers
 {
     public class HastaneController : Controller
     {
+        private readonly ILogger<HastaneController> _logger;
+        private LanguageService _localization;
+
+      
         private readonly HastaneRandevuuContext _context;
 
-        public HastaneController(HastaneRandevuuContext context)
+        public HastaneController(HastaneRandevuuContext context, ILogger<HastaneController> logger, LanguageService localization)
         {
             _context = context;
+			_logger = logger;
+			_localization = localization;
+		}
+
+        public IActionResult ChangeLanguage(string culture)
+        {
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),new CookieOptions() 
+            { 
+            
+            Expires = DateTimeOffset.UtcNow.AddYears(1)
+            
+            });
+            return Redirect(Request.Headers["Referer"].ToString());
+                
+            
         }
+       
 
         // GET: Hastane
         public async Task<IActionResult> Index()
         {
-			List<Hastane> hastane = new List<Hastane>();
+            ViewBag.HastaneAdi = _localization.Getkey("Hastane Adı").Value;
+            ViewBag.baslik = _localization.Getkey("Hastaneler").Value;
+            ViewBag.detay = _localization.Getkey("Detay").Value;
+            ViewBag.düzenle = _localization.Getkey("Düzenle").Value;
+            ViewBag.sil = _localization.Getkey("Sil").Value;
+            ViewBag.ekle = _localization.Getkey("Yeni Hastane Ekle").Value;
+            var currentCulture = Thread.CurrentThread.CurrentCulture.Name;
+            List<Hastane> hastane = new List<Hastane>();
 			HttpClient client = new HttpClient();
 			var response = await client.GetAsync("https://localhost:7020/api/HastaneApi");
 			var jsonResponse = await response.Content.ReadAsStringAsync();
 			hastane = JsonConvert.DeserializeObject<List<Hastane>>(jsonResponse);
-
-			return View(hastane);
+            
+            return View(hastane);
 
 		}
 
 		// GET: Hastane/Details/5
 		public async Task<IActionResult> Details(int? id)
         {
-			var hastane = await _context.Hastanes
+            ViewBag.Hastane = _localization.Getkey("Hastane").Value;
+            ViewBag.dön = _localization.Getkey("Listeye Geri Dön").Value;
+            
+            var hastane = await _context.Hastanes
 			  .Include(h => h.Polikliniks)
 			  .FirstOrDefaultAsync(m => m.HastaneId == id);
 
@@ -88,9 +122,10 @@ namespace HastaneRandevuSistemiii.Controllers
 
 		// GET: Hastane/Edit/5
 		[Authorize(Roles = "Admin")]
-
+        
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.Kaydet = _localization.Getkey("Kaydet").Value;
             if (id == null || _context.Hastanes == null)
             {
                 return NotFound();
@@ -145,6 +180,9 @@ namespace HastaneRandevuSistemiii.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.HastaneBilgileri = _localization.Getkey("Hastane Bilgileri").Value; 
+            ViewBag.HastaneSil = _localization.Getkey("Hastane Sil").Value;
+
             if (id == null || _context.Hastanes == null)
             {
                 return NotFound();

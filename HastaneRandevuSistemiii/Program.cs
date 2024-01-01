@@ -4,8 +4,51 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using HastaneRandevuSistemiii.Services;
+using System.Reflection;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+#region Localizer
+builder.Services.AddSingleton<LanguageService>();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options=>
+options.DataAnnotationLocalizerProvider=(type, factory) =>
+{
+    var assemblyName= new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+    return factory.Create(nameof(SharedResource), assemblyName.Name);
+});
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportCultures = new List<CultureInfo>
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("tr-TR"),
+    };
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(culture: "tr-TR", uiCulture: "tr-TR");
+    options.SupportedCultures = supportCultures;
+    options.SupportedUICultures = supportCultures;
+    options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+});
+#endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -20,6 +63,7 @@ builder.Services.AddIdentity<Kullanici,IdentityRole>()
      .AddDefaultUI()
      .AddEntityFrameworkStores<HastaneRandevuuContext>();
 
+
 ///////Password
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -32,6 +76,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 JsonSerializerOptions options = new JsonSerializerOptions();
 options.ReferenceHandler = ReferenceHandler.Preserve;
+
 
 
 //var json = JsonSerializer.Serialize(obj, options);
@@ -56,7 +101,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseRouting();
 
 app.UseAuthentication();

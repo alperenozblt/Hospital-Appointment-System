@@ -81,6 +81,25 @@
 	</div>
 
 	<footer class="border-top footer text-muted">
+		<div class="dropdown">
+			<button type="button"class="btn btn-primary dropdown-toggle" data-bs-toogle="dropdown">Localization</button>
+			<ul class="dropdown-menu">
+				<li>
+					<a asp-controller="Hastane"asp-action="ChangeLanguage" asp-route-culture="en-US" class="dropdown-item">
+						<i class="flag-icon flag-icon-gb"></i>English
+						
+					</a>
+				</li>
+				<a asp-controller="Hastane" asp-action="ChangeLanguage" asp-route-culture="tr-TR" class="dropdown-item">
+					<i class="flag-icon flag-icon-gb"></i>Türkçe
+
+				</a>
+				<li>
+
+				</li>
+			</ul>
+
+		</div>
 		<div class="container">
 			&copy; 2023 - HastaneRandevuSistemiii - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>

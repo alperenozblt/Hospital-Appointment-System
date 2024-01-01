@@ -5,9 +5,9 @@
 }
 
 
-<h1>Edit</h1>
+<h1 name="Düzenle">@_localization.Getkey("Düzenle").Value</h1>
 
-<h4>Hastane</h4>
+<h4 name="Hastane">@_localization.Getkey("Hastane").Value</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,16 +29,17 @@
 				<input asp-for="HastaneAddress" class="form-control" />
 				<span asp-validation-for="HastaneAddress" class="text-danger"></span>
 			</div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+			<br />
+			<input type="submit" class="btn btn-primary" id="@_localization.Getkey("Kaydet").Value" value="@_localization.Getkey("Kaydet").Value"   />
+			<div>
+				<br/>
+				<a asp-action="Index" class="btn btn-primary" id="dön">@_localization.Getkey("Listeye Geri Dön").Value</a>
+			</div>
+		</form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

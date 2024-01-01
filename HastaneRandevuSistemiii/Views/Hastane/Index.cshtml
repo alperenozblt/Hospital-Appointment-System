@@ -1,4 +1,13 @@
-﻿@model IEnumerable<HastaneRandevuSistemiii.Models.Hastane>
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Mvc.Localization
+
+
+
+@model IEnumerable<HastaneRandevuSistemiii.Models.Hastane>
+
+
 
 @{
     ViewData["Title"] = "Hastaneler";  
@@ -6,12 +15,12 @@
 
 <link rel="stylesheet" href="~/css/Index.css"/>
 
-<h1>Hastaneler</h1>
+<h1 name="baslik">@_localization.Getkey("Hastaneler").Value</h1>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Hastane Adı</th>
+            <th>@_localization.Getkey("Hastane Adı").Value</th>
             <th></th>
         </tr>
     </thead>
@@ -21,11 +30,11 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => hastane.HastaneAdi)</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@hastane.HastaneId" class="btn-primary">Detaylar</a>
+                    <a asp-action="Details" asp-route-id="@hastane.HastaneId" id="Detay" class="btn-primary">@_localization.Getkey("Detay").Value</a>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="Edit" asp-route-id="@hastane.HastaneId" class="btn-primary">Düzenle</a>
-                        <a asp-action="Delete" asp-route-id="@hastane.HastaneId" class="btn-primary">Sil</a>
+                        <a asp-action="Edit" asp-route-id="@hastane.HastaneId" id="Düzenle" class="btn-primary">@_localization.Getkey("Düzenle").Value</a>
+                        <a asp-action="Delete" asp-route-id="@hastane.HastaneId" id="Sil" class="btn-primary">@_localization.Getkey("Sil").Value</a>
                     }
                 </td>
             </tr>
@@ -37,5 +46,5 @@
 
 @if (User.IsInRole("Admin"))
 {
-    <a asp-action="Create" class="btn-primary">Yeni Hastane Ekle</a>
+    <a asp-action="Create" id="Yeni Hastane Ekle" class="btn-primary">@_localization.Getkey("Yeni Hastane Ekle").Value</a>
 }
