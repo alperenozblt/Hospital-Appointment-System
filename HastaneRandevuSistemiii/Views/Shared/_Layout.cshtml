@@ -67,6 +67,19 @@
 								}
 							</div>
 						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-dark" asp-controller="Randevu" asp-action="Index" id="RandevuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Randevular</a>
+							<div class="dropdown-menu" aria-labelledby="RandevuDropdown">
+
+								<a class="dropdown-item" asp-controller="Randevu" asp-action="Index">Randevular</a>
+
+								@if (User.IsInRole("Admin"))
+								{
+									<a class="dropdown-item" asp-controller="Randevu" asp-action="Create">Randevu Ekle</a>
+									<a class="dropdown-item" asp-controller="Randevu" asp-action="Delete">Randevu Sil</a>
+								}
+							</div>
+						</li>
 
 					</ul>
 					<partial name="_LoginPartial" />
@@ -81,29 +94,32 @@
 	</div>
 
 	<footer class="border-top footer text-muted">
-		<div class="dropdown">
-			<button type="button"class="btn btn-primary dropdown-toggle" data-bs-toogle="dropdown">Localization</button>
-			<ul class="dropdown-menu">
-				<li>
-					<a asp-controller="Hastane"asp-action="ChangeLanguage" asp-route-culture="en-US" class="dropdown-item">
-						<i class="flag-icon flag-icon-gb"></i>English
-						
-					</a>
-				</li>
-				<a asp-controller="Hastane" asp-action="ChangeLanguage" asp-route-culture="tr-TR" class="dropdown-item">
-					<i class="flag-icon flag-icon-gb"></i>Türkçe
+		<div class="container" style="margin-bottom:auto">
+			<div class="dropdown text-end">
+				<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+					Diller
+				</button>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="dropdown-item" asp-controller="Hastane" asp-action="ChangeLanguage" asp-route-culture="en-US">
+							<i class="flag-icon flag-icon-gb"></i> İngilizce
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" asp-controller="Hastane" asp-action="ChangeLanguage" asp-route-culture="tr-TR">
+							<i class="flag-icon flag-icon-tr"></i> Türkçe
+						</a>
+					</li>
+				</ul>
+			</div>
 
-				</a>
-				<li>
-
-				</li>
-			</ul>
-
-		</div>
-		<div class="container">
-			&copy; 2023 - HastaneRandevuSistemiii - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+			<div class="text-center py-3">
+				<small>&copy; 2023 HastaneRandevuSistemiii</small>
+				<a asp-area="" asp-controller="Home" asp-action="Privacy" class="ms-1">Gizlilik</a>
+			</div>
 		</div>
 	</footer>
+
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>

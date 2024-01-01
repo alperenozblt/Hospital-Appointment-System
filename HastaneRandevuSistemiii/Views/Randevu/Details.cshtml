@@ -1,42 +1,176 @@
 ﻿@model HastaneRandevuSistemiii.Models.Randevu
 
+<style>
+    /* General styling */
+    body {
+        font-family: sans-serif;
+        margin: 20px;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Form layout */
+    .row {
+        display: flex;
+        justify-content: center; /* Center the form horizontally */
+    }
+
+    .col-md-4 {
+        flex-basis: 30%; /* Adjust width as needed */
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Form elements */
+    select,
+    input,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+    /* Buttons */
+    .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: #0069d9;
+        }
+
+    /* Error messages */
+    .text-danger {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+
+    .details {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .row {
+        margin-bottom: 20px;
+    }
+
+    .dt {
+        font-weight: bold;
+    }
+
+    .dd {
+        margin-bottom: 10px;
+    }
+
+    .hastane-adi {
+        font-size: 1.2em;
+    }
+
+</style>
 @{
     ViewData["Title"] = "Details";
+    var hastaneler = ViewData["Hastaneler"] as List<Hastane>;
+    var doktorlar = ViewData["Doktorlar"] as List<Doktor>;
+    var kullanıcılar = ViewData["Kullanıcılar"] as List<Kullanici>;
+    var poliklinikler = ViewData["Poliklinikler"] as List<Poliklinik>;
+    var kullanici = kullanıcılar.FirstOrDefault(x => x.Id == Model.KullaniciId);
+    Doktor doktor = null;
+    Poliklinik poliklinik = null;
+
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>Randevu</h4>
+    <h4>Doktor</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DoktorId)
+        <dt class="col-sm-4">
+            Hasta
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DoktorId)
+        <dd class="col-sm-8">
+            @kullanici.KullaniciAd @kullanici.KullaniciSoyad
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KullaniciId)
+        <dt class="col-sm-4">
+            Randevu Günü  -  Randevu Saati
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KullaniciId)
+        <dd class="col-sm-8">
+            @Model.RandevuGun.ToString().Substring(0, 10)  -  @Model.RandevuSaat
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HastaneId)
+        <dt class="col-sm-4">
+            Poliklinik Adı
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HastaneId)
+        <dd class="col-sm-8">
+            @if (doktorlar.FirstOrDefault(p => p.DoktorId == Model.DoktorId) != null)
+            {
+
+                doktor = doktorlar.FirstOrDefault(p => p.DoktorId == Model.DoktorId);
+                <label>@doktor.DoktorAdi @doktor.DoktorSoyadi</label>
+
+            }
+            else
+            {
+                <p>Kayıtlı Olduğu Randevunun doktoru Bulunamadı</p>
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RandevuTarih)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RandevuTarih)
-        </dd>
+        @if (doktor != null)
+        {
+            <dt class="col-sm-4">
+                Poliklinik Adı
+            </dt>
+            <dd class="col-sm-8">
+                @{
+                    poliklinik = poliklinikler.FirstOrDefault(x => x.PoliklinikId == doktor.PoliklinikId);
+                }
+                @poliklinik.PoliklinikAdi
+            </dd>
+        }
+        @if (poliklinik != null)
+        {
+            <dt class="col-sm-4">
+                Hastane Adı
+            </dt>
+            <dd class="col-sm-8">
+                @{
+                    var hastane = hastaneler.FirstOrDefault(x => x.HastaneId == poliklinik.HastaneId);
+                }
+                @hastane.HastaneAdi
+            </dd>
+        }
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.RandevuID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Listeye Dön</a>
 </div>

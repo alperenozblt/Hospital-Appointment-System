@@ -1,44 +1,142 @@
 ﻿@model HastaneRandevuSistemiii.Models.Randevu
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Randevu Ekle";
+    var hastaneler = ViewData["Hastaneler"] as List<Hastane>;
+    var kullanıcılar = ViewData["Kullanıcılar"] as List<Kullanici>;
 }
 
-<h1>Create</h1>
+<div class="container">
+    <h1 class="mt-4 mb-4">Randevu Oluştur</h1>
 
-<h4>Randevu</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DoktorId" class="control-label"></label>
-                <input asp-for="DoktorId" class="form-control" />
-                <span asp-validation-for="DoktorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HastaneId" class="control-label"></label>
-                <input asp-for="HastaneId" class="form-control" />
-                <span asp-validation-for="HastaneId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RandevuTarih" class="control-label"></label>
-                <input asp-for="RandevuTarih" class="form-control" />
-                <span asp-validation-for="RandevuTarih" class="text-danger"></span>
-            </div>
-       
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="form-group">
+                    <label>Hastane</label>
+                    <select class="form-select form-select-lg" aria-label="Large select example" onchange="GetPoliklinikler(this.value)">
+                        <option value="">Seçiniz</option>
+                        @foreach (var item in hastaneler)
+                        {
+                            <option value="@item.HastaneId">@item.HastaneAdi</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Poliklinik</label>
+                    <select id="PoliklinikId" class="form-select form-select-lg" aria-label="Large select example" onchange="GetDoktorlar(this.value)">
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Doktor</label>
+                    <select id="DoktorId" asp-for="DoktorId" class="form-select form-select-lg" aria-label="Large select example"></select>
+                    <span asp-validation-for="DoktorId" class="text-danger"></span>
+                </div>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="form-group">
+                        <label>Hasta</label>
+                        <select asp-for="KullaniciId" class="form-select form-select-lg" aria-label="Large select example">
+                            <option value="">Seçiniz</option>
+                            @foreach (var item in kullanıcılar)
+                            {
+                                <option value="@item.Id">@item.KullaniciAd @item.KullaniciSoyad</option>
+                            }
+                        </select>
+                        <span asp-validation-for="KullaniciId" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label asp-for="RandevuGun" class="control-label"></label>
+                    <input asp-for="RandevuGun" class="form-control form-control-lg" />
+                    <span asp-validation-for="RandevuGun" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="RandevuSaat" class="control-label"></label>
+                    <select asp-for="RandevuSaat" class="form-select form-select-lg" aria-label="Large select example">
+                        <option value="">Seçiniz</option>
+                        <option value="09:00">09:00</option>
+                    </select>
+                    <span asp-validation-for="RandevuSaat" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg">Randevu Oluştur</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-outline-secondary">Geri Dön</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+    }
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 0;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-select {
+        width: 100%;
+    }
+
+    .form-control {
+        height: 40px;
+        border-radius: 20px;
+    }
+
+    .btn {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 20px;
+    }
+
+    .alert {
+        width: 100%;
+        text-align: center;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-4 {
+        margin-bottom: 1rem;
+    }
+
+    .mt-4 {
+        margin-top: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-outline-secondary {
+        border: 1px solid #ccc;
+        color: #ccc;
+    }
+
+
+</style>

@@ -8,32 +8,48 @@ using Microsoft.EntityFrameworkCore;
 using HastaneRandevuSistemiii.Data;
 using HastaneRandevuSistemiii.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using HastaneRandevuSistemiii.Models;
+using HastaneRandevuSistemiii.Data;
 
-namespace HastaneRandevuSistemiii.Controllers
+namespace Hastane_Randevu_Sistemi.Controllers
 {
     public class RandevuController : Controller
     {
         private readonly HastaneRandevuuContext _context;
-        private readonly SignInManager<Kullanici> _signInManager;
+        private readonly UserManager<Kullanici> _userManager;
 
-
-        public RandevuController(HastaneRandevuuContext context, SignInManager<Kullanici> signInManager)
+        public RandevuController(HastaneRandevuuContext context, UserManager<Kullanici> userManager)
         {
-            _signInManager = signInManager;
             _context = context;
+            _userManager = userManager;
         }
-
-        // GET: Randevu
         public async Task<IActionResult> Index()
         {
-              return _context.Randevus != null ? 
-                          View(await _context.Randevus.Include(p=>p.Doktor).ToListAsync()) :
-                          Problem("Entity set 'HastaneRandevuuContext.Randevus'  is null.");
+            ViewData["Doktorlar"] = _context.Doktors.ToList();
+            return _context.Randevus != null ?
+                        View(await _context.Randevus.ToListAsync()) :
+                        Problem("Entity set 'HastaneContext.Randevu'  is null.");
+        }
+
+        public async Task<IActionResult> RandevuList()
+        {
+            var userid = _userManager.GetUserId(User);
+            var randevular = _context.Randevus.Where(x => x.KullaniciId == userid);
+            return randevular != null ?
+                        View(randevular) :
+                        Problem("Randevu Bulunamadı");
         }
 
         // GET: Randevu/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["Kullanıcılar"] = _context.Users.ToList();
+            var hastaneler = _context.Hastanes.ToList();
+            ViewData["Hastaneler"] = hastaneler;
+
+            ViewData["Poliklinikler"] = _context.Polikliniks.ToList();
+            ViewData["Doktorlar"] = _context.Doktors.ToList();
             if (id == null || _context.Randevus == null)
             {
                 return NotFound();
@@ -49,33 +65,30 @@ namespace HastaneRandevuSistemiii.Controllers
             return View(randevu);
         }
 
-
-
-
-
-
-
-    //    var randevuVar = _context.Randevus.FirstOrDefault(x => x.RandevuTarih == randevu.RandevuTarih && x.RandevuSaat == randevu.RandevuSaat);
-    //            if (randevuVar != null)
-    //            {
-    //               // ModelState.AddModelError("Randevu zaten alınmış.");
-    //                return View(randevu);
-    //}
-
-
-
-    // GET: Randevu/Create
-    public IActionResult Create()
+        // GET: Randevu/Create
+        public IActionResult Create()
         {
+            ViewData["Kullanıcılar"] = _context.Users.ToList();
+            var hastaneler = _context.Hastanes.ToList();
+            ViewData["Hastaneler"] = hastaneler;
 
-
-            var hastaneler =_context.Hastanes.ToList();
-            ViewBag.Hastanes = new SelectList(hastaneler, "HastaneId", "HastaneAdi");
-
-
+            ViewData["Poliklinikler"] = _context.Polikliniks.ToList();
+            ViewData["Doktorlar"] = _context.Doktors.ToList();
 
 
             return View();
+        }
+
+        public async Task<IActionResult> GetPoliklinikler(int hastaneId)
+        {
+            var poliklinikler = await _context.Polikliniks.Where(p => p.HastaneId == hastaneId).ToListAsync();
+            return Json(poliklinikler);
+        }
+
+        public async Task<IActionResult> GetDoktorlar(int poliklinikId)
+        {
+            var doktorlar = await _context.Doktors.Where(d => d.PoliklinikId == poliklinikId).ToListAsync();
+            return Json(doktorlar);
         }
 
         // POST: Randevu/Create
@@ -83,15 +96,23 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Randevu randevu)
+        public async Task<IActionResult> Create(Randevu randevu)
         {
+            ViewData["Kullanıcılar"] = _context.Users.ToList();
+            var hastaneler = _context.Hastanes.ToList();
+            ViewData["Hastaneler"] = hastaneler;
 
-            Kullanici kullanici = await _signInManager.UserManager.GetUserAsync(User);
+            ViewData["Poliklinikler"] = _context.Polikliniks.ToList();
+            ViewData["Doktorlar"] = _context.Doktors.ToList();
 
 
-            if (ModelState.IsValid)
+            var randevular = _context.Randevus.ToList();
+            randevu.KullaniciId = _userManager.GetUserId(User);
+
+            if (!randevular.Any(x => x.RandevuGun == randevu.RandevuGun && x.RandevuSaat == x.RandevuSaat && x.DoktorId == randevu.DoktorId))
             {
-                _context.Add(randevu); 
+                randevu.IsEmpty = false;
+                _context.Add(randevu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -99,8 +120,15 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Randevu/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["Kullanıcılar"] = _context.Users.ToList();
+            var hastaneler = _context.Hastanes.ToList();
+            ViewData["Hastaneler"] = hastaneler;
+
+            ViewData["Poliklinikler"] = _context.Polikliniks.ToList();
+            ViewData["Doktorlar"] = _context.Doktors.ToList();
             if (id == null || _context.Randevus == null)
             {
                 return NotFound();
@@ -119,8 +147,14 @@ namespace HastaneRandevuSistemiii.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RandevuID,DoktorId,KullaniciId,HastaneId,RandevuTarih")] Randevu randevu)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("RandevuID,DoktorId,KullaniciId,RandevuGun,RandevuSaat,IsEmpty")] Randevu randevu)
         {
+            var hastaneler = _context.Hastanes.ToList();
+            ViewData["Hastaneler"] = hastaneler;
+
+            ViewData["Poliklinikler"] = _context.Polikliniks.ToList();
+            ViewData["Doktorlar"] = _context.Doktors.ToList();
             if (id != randevu.RandevuID)
             {
                 return NotFound();
@@ -150,8 +184,10 @@ namespace HastaneRandevuSistemiii.Controllers
         }
 
         // GET: Randevu/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["Kullanıcılar"] = _context.Users.ToList();
             if (id == null || _context.Randevus == null)
             {
                 return NotFound();
@@ -170,28 +206,27 @@ namespace HastaneRandevuSistemiii.Controllers
         // POST: Randevu/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["Kullanıcılar"] = _context.Users.ToList();
             if (_context.Randevus == null)
             {
-                return Problem("Entity set 'HastaneRandevuuContext.Randevus'  is null.");
+                return Problem("Entity set 'HastaneContext.Randevu'  is null.");
             }
             var randevu = await _context.Randevus.FindAsync(id);
             if (randevu != null)
             {
                 _context.Randevus.Remove(randevu);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RandevuExists(int id)
         {
-          return (_context.Randevus?.Any(e => e.RandevuID == id)).GetValueOrDefault();
+            return (_context.Randevus?.Any(e => e.RandevuID == id)).GetValueOrDefault();
         }
-
-      
-       
     }
 }

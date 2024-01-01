@@ -1,53 +1,73 @@
 ﻿@model IEnumerable<HastaneRandevuSistemiii.Models.Randevu>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Randevu Listesi";
+    var doktorlar = ViewData["Doktorlar"] as List<Doktor>;
 }
 
-<h1>Index</h1>
+<div class="container">
+    <h1 class="mt-4 mb-4">Randevular</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DoktorId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.KullaniciId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HastaneId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RandevuTarih)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DoktorId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.KullaniciId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HastaneId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RandevuTarih)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RandevuID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RandevuID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RandevuID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Randevu Günü</th>
+                <th scope="col">Randevu Saati</th>
+                <th scope="col">Doktor</th>
+                <th scope="col">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.RandevuGun.ToString().Substring(0, 10)</td>
+                    <td>@item.RandevuSaat</td>
+                    <td>
+                        @{
+                            var doktor = doktorlar.FirstOrDefault(x => x.DoktorId == item.DoktorId);
+                        }
+                        @doktor.DoktorAdi @doktor.DoktorSoyadi
+                    </td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.RandevuID" class="btn btn-sm btn-primary">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@item.RandevuID" class="btn btn-sm btn-danger">Sil</a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.RandevuID" class="btn btn-sm btn-info">Detay</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a asp-action="Create" class="btn btn-primary">Randevu Ekle</a>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    th {
+        font-weight: bold;
+        text-align: left;
+    }
+
+    td {
+        padding: 10px;
+    }
+
+    .btn {
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+    }
+</style>
