@@ -48,7 +48,8 @@ namespace HastaneRandevuSistemiii.Controllers
 			HttpClient client = new HttpClient();
 			var response = await client.GetAsync("https://localhost:7020/api/HastaneApi/id");
 			var jsonResponse = await response.Content.ReadAsStringAsync();
-			hastane = JsonConvert.DeserializeObject<Hastane>(jsonResponse);
+            ViewBag.hastane = jsonResponse;
+			//hastane = JsonConvert.DeserializeObject<Hastane>(jsonResponse);
 
 			return View(hastane);
 
@@ -81,7 +82,7 @@ namespace HastaneRandevuSistemiii.Controllers
 			var response = await client.PostAsync("https://localhost:7020/api/HastaneApi/", content);
 			var jsonResponse = await response.Content.ReadAsStringAsync();
 			hastane = JsonConvert.DeserializeObject<Hastane>(jsonResponse);
-			return View(hastane);
+			return RedirectToAction("Index");
 
 		}
 
@@ -135,7 +136,7 @@ namespace HastaneRandevuSistemiii.Controllers
 				ViewData["mesaj"] = "Hastane güncellenemedi.";
 			}
 
-			return View(hastane);
+			return RedirectToAction("Index");
 
 		}
 
