@@ -20,8 +20,7 @@ namespace HastaneRandevuSistemiii.Models
 		public string HastaneTel { get; set; }
 
 
-        [JsonIgnore]
-        public List<Poliklinik> Polikliniks { get; set; }
+        public List<Poliklinik>? Polikliniks { get; set; }
 
 
         //public ICollection<Poliklinik> polikliniks { get; set; }

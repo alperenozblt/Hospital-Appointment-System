@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HastaneRandevuSistemiii.Migrations
 {
-    public partial class denedikmi : Migration
+    public partial class dene : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

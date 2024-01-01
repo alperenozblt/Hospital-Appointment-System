@@ -52,6 +52,8 @@ namespace Hastane_Randevu_Sistemi.Controllers
 		{
 			var _hastane = _context.Hastanes.FirstOrDefault(x => x.HastaneId == id);
 			_hastane.HastaneAdi = hastane.HastaneAdi;
+			_hastane.HastaneAddress = hastane.HastaneAddress;
+			_hastane.HastaneTel= hastane.HastaneTel;	
 			_context.Update(_hastane);
 			_context.SaveChanges();
 			return Ok(_hastane);

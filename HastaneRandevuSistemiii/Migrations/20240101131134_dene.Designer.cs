@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HastaneRandevuSistemiii.Migrations
 {
     [DbContext(typeof(HastaneRandevuuContext))]
-    [Migration("20231231145422_denedikmi")]
-    partial class denedikmi
+    [Migration("20240101131134_dene")]
+    partial class dene
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
